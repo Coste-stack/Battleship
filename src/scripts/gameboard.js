@@ -113,4 +113,21 @@ export class Gameboard {
 
     }
 
+
+    removeShip(x, y, ship, orientation) {
+        switch (orientation) {
+            case 'x':
+                for(let i = x; i < x+ship.length; i++) {
+                    this.#board[y][i] = { ship: undefined, isHit: false };
+                }
+                break;
+            case 'y':
+                for(let i = y; i < y+ship.length; i++) {
+                    this.#board[i][x] = { ship: undefined, isHit: false };
+                }
+                break;
+            default:
+                throw new Error('invalid passed "orientation"! (When removing a ship)');
+        }
+    }
 }
