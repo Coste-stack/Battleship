@@ -30,10 +30,36 @@ export class Gameboard {
     get height() { return this.#height; }
     get board() { return this.#board; }
 
+    // checks if (on ship placement) there is another ship (that prevents placement)
+    canPlaceShip(x, y, ship, orientation) {
+        switch (orientation) {
+            case 'x':
+                for(let i = x; i < x+ship.length; i++) {
+                    if (this.#board[y][i].ship !== undefined) {
+                        return false;
+                    }
+                }
+                break;
+            case 'y':
+                for(let i = y; i < y+ship.length; i++) {
+                    if (this.#board[i][x].ship !== undefined) {
+                        return false;
+                    }
+                }
+                break;
+            default:
+                throw new Error('invalid passed "orientation"! (When checking for valid ship placement)');
+        }
+        return true;
+    }
+
     placeShip(x, y, ship, orientation = 'x') {
         // check if ship fits the board (based on orientation)
         switch (orientation) {
-            case 'x':
+        case 'x':
+            if (!this.canPlaceShip(x, y, ship, orientation)) {
+                throw new Error('Another ship is in path of ship placement! (horizontally)');
+            }
             if (x >= 0 && x+ship.length <= this.#width) {
                 // change '#board' tiles on the horizontal
                 for(let i = x; i < x+ship.length; i++) {
@@ -44,9 +70,12 @@ export class Gameboard {
             }
             break;
         case 'y':
+            if (!this.canPlaceShip(x, y, ship, orientation)) {
+                throw new Error('Another ship is in path of ship placement! (vertically)');
+            }
             if (y >= 0 && y+ship.length <= this.#height) {
                 // change '#board' tiles on the vertical
-                for(let i = x; i < x+ship.length; i++) {
+                for(let i = y; i < y+ship.length; i++) {
                     this.#board[i][x] = {ship: ship, isHit: false};
                 }
             } else {
@@ -60,11 +89,11 @@ export class Gameboard {
 
     receiveAttack(x, y) {
         // if already shot this tile
-        if (this.#board[y][x]['isHit']) {
+        if (this.#board[y][x].isHit) {
             // check if there's a ship or not
-            if (this.#board[y][x]['ship'] === undefined) {
+            if (this.#board[y][x].ship === undefined) {
                 throw new Error('Tile(blank) already shot');
-            } else if (typeof this.#board[y][x]['ship'] === 'object') {
+            } else if (typeof this.#board[y][x].ship === 'object') {
                 throw new Error('Tile(ship) already shot');
             } else {
                 throw new Error('Tile(unknown) already shot');
@@ -72,13 +101,13 @@ export class Gameboard {
         } 
         // if not shot, shoot!
         else {
-            if (this.#board[y][x]['ship'] === undefined) {
+            if (this.#board[y][x].ship === undefined) {
                 // not a ship, MISSED!
-                this.#board[y][x]['isHit'] = true;
-            } else if (typeof this.#board[y][x]['ship'] === 'object') {
+                this.#board[y][x].isHit = true;
+            } else if (typeof this.#board[y][x].ship === 'object') {
                 // a ship, HIT!
-                this.#board[y][x]['isHit'] = true;
-                this.#board[y][x]['ship'].hit();
+                this.#board[y][x].isHit = true;
+                this.#board[y][x].ship.hit();
             }
         }
 

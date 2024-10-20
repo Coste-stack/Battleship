@@ -13,6 +13,10 @@ export function initGameboard(gameboard) {
             // create tiles inside line
             const tile = document.createElement('div');
             tile.classList.add('tile');
+            if (gameboard.board[y][x].ship !== undefined) {
+                tile.classList.add('ship');
+                tile.classList.add(gameboard.board[y][x].ship.name);
+            }
             line.appendChild(tile);
         }
         grid.appendChild(line);

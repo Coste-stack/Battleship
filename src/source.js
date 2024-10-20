@@ -10,7 +10,7 @@ import { initGameboard } from './scripts/gameboardView.js';
     try {
         
         // initialize Ship objects
-        const shipsInitial = {'Carrier': 5, 'Battleship': 4, 'Cruiser': 3, 'Submarine': 3, 'Destroyer': 2, 'Patrol': 1};
+        const shipsInitial = {'Battleship': 4, 'Cruiser': 3, 'Submarine': 3, 'Destroyer': 2, 'Patrol': 1};
         const ships = [];
         Object.entries(shipsInitial).forEach(([ship, length]) => {
             const shipObj = new Ship(ship, length); 
@@ -22,11 +22,13 @@ import { initGameboard } from './scripts/gameboardView.js';
         const player1 = new Player('player');
         const player2 = new Player('computer');
 
+        player1.randomlySetShips(ships);
         initGameboard(player1.gameboard);
+        
 
 
     } catch (e) {
-        console.error(e.message);
+        console.error(e);
     }
 
 })();
