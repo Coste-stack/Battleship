@@ -72,7 +72,6 @@ export default class Gameboard {
         } 
         // if not shot, shoot!
         else {
-            
             if (this.#board[y][x]['ship'] === undefined) {
                 // not a ship, MISSED!
                 this.#board[y][x]['isHit'] = true;
