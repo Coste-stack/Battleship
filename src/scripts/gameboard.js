@@ -59,6 +59,29 @@ export default class Gameboard {
     }
 
     receiveAttack(x, y) {
+        // if already shot this tile
+        if (this.#board[y][x]['isHit']) {
+            // check if there's a ship or not
+            if (this.#board[y][x]['ship'] === undefined) {
+                throw new Error('Tile(blank) already shot');
+            } else if (typeof this.#board[y][x]['ship'] === object) {
+                throw new Error('Tile(ship) already shot');
+            } else {
+                throw new Error('Tile(unknown) already shot');
+            }
+        } 
+        // if not shot, shoot!
+        else {
+            
+            if (this.#board[y][x]['ship'] === undefined) {
+                // not a ship, MISSED!
+                this.#board[y][x]['isHit'] = true;
+            } else if (typeof this.#board[y][x]['ship'] === object) {
+                // a ship, HIT!
+                this.#board[y][x]['isHit'] = true;
+                this.#board[y][x]['ship'].hit();
+            }
+        }
 
     }
 
