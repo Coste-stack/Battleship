@@ -1,6 +1,6 @@
-import Gameboard from "./gameboard"
+import { Gameboard } from "./gameboard"
 
-export default class Player {
+export class Player {
     #type;
     #gameboard;
     
@@ -9,7 +9,7 @@ export default class Player {
             throw new Error('Type for Player is invalid! (put "player" or "computer")');
         }
         this.#type = type;
-        this.#gameboard = new Gameboard(10, 10);
+        this.#gameboard = new Gameboard(5, 5);
     }
 
     get type() { return this.#type; }

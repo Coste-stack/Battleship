@@ -1,4 +1,4 @@
-export default class Gameboard {
+export class Gameboard {
     #board;
     #width; #height;
 
