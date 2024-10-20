@@ -1,5 +1,5 @@
-import Ship from '../src/scripts/ship';
-import Gameboard from '../src/scripts/gameboard';
+import { Ship } from '../src/scripts/ship.js';
+import { Gameboard } from '../src/scripts/gameboard.js';
 
 describe('Gameboard Class', () => {
 

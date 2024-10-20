@@ -24,8 +24,6 @@ import { initGameboard } from './scripts/gameboardView.js';
 
         player1.randomlySetShips(ships);
         initGameboard(player1.gameboard);
-        
-
 
     } catch (e) {
         console.error(e);
