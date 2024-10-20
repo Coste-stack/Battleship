@@ -76,8 +76,8 @@ describe('Gameboard Class', () => {
         gameboard.placeShip(0, 0, cruiser, 'x');
 
 
-        gameboard.receiveAttack(0, 0);
-        expect(gameboard.board[0][0]).toStrictEqual({ship: cruiser, isHit: true});
+        gameboard.receiveAttack(1, 0);
+        expect(gameboard.board[0][1]).toStrictEqual({ship: cruiser, isHit: true});
     });
 
 });
