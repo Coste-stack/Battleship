@@ -64,7 +64,7 @@ export default class Gameboard {
             // check if there's a ship or not
             if (this.#board[y][x]['ship'] === undefined) {
                 throw new Error('Tile(blank) already shot');
-            } else if (typeof this.#board[y][x]['ship'] === object) {
+            } else if (typeof this.#board[y][x]['ship'] === 'object') {
                 throw new Error('Tile(ship) already shot');
             } else {
                 throw new Error('Tile(unknown) already shot');
@@ -76,7 +76,7 @@ export default class Gameboard {
             if (this.#board[y][x]['ship'] === undefined) {
                 // not a ship, MISSED!
                 this.#board[y][x]['isHit'] = true;
-            } else if (typeof this.#board[y][x]['ship'] === object) {
+            } else if (typeof this.#board[y][x]['ship'] === 'object') {
                 // a ship, HIT!
                 this.#board[y][x]['isHit'] = true;
                 this.#board[y][x]['ship'].hit();

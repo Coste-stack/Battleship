@@ -3,12 +3,9 @@ import Gameboard from '../src/scripts/gameboard';
 
 describe('Gameboard Class', () => {
 
-    let Carrier, Patrol;
     let gameboard;
-    beforeEach(() => {
-        Carrier = new Ship('Carrier', 5);
-        Patrol = new Ship('Patrol', 1);
-    });
+
+    /* TESTS TO CHECK FOR GAMEBOARD VALIDITY */
 
     test('Create gameboard', () => {
         gameboard = new Gameboard(12, 3);
@@ -29,6 +26,9 @@ describe('Gameboard Class', () => {
         expect(() => new Gameboard(2, [])).toThrow(Error);
     });
 
+
+    /* TESTS TO CHECK FOR PLACEMENT */
+
     test('Set ship on {x:0, y:0} horizontally', () => {
         let width = 3, height = 3;
         let x = 0, y = 0;
@@ -46,7 +46,7 @@ describe('Gameboard Class', () => {
         let x = 0, y = 0;
         gameboard = new Gameboard(width, height);
         let cruiser = new Ship('Cruiser', 3);
-        gameboard.placeShip(x, y, cruiser);
+        gameboard.placeShip(x, y, cruiser, 'y');
 
         for(let i=y; i < y; y++) {
             expect(gameboard.board[i][y]).toStrictEqual({ship: cruiser, isHit: false});
@@ -60,6 +60,24 @@ describe('Gameboard Class', () => {
         let cruiser = new Ship('Cruiser', 3);
         
         expect(() => gameboard.placeShip(x, y, cruiser)).toThrow(Error);
+    });
+
+    /* TESTS TO CHECK FOR SHOOTING */
+
+    test('Shoot at {x:0, y:0}, no ship', () => {
+        gameboard = new Gameboard(3, 3);
+        gameboard.receiveAttack(0, 0);
+        expect(gameboard.board[0][0]).toStrictEqual({ship: undefined, isHit: true});
+    });
+
+    test('Shoot at {x:1, y:0}, with ship', () => {
+        gameboard = new Gameboard(3, 3);
+        let cruiser = new Ship('Cruiser', 3);
+        gameboard.placeShip(0, 0, cruiser, 'x');
+
+
+        gameboard.receiveAttack(0, 0);
+        expect(gameboard.board[0][0]).toStrictEqual({ship: cruiser, isHit: true});
     });
 
 });
