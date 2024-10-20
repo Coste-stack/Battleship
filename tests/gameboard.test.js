@@ -29,4 +29,37 @@ describe('Gameboard Class', () => {
         expect(() => new Gameboard(2, [])).toThrow(Error);
     });
 
+    test('Set ship on {x:0, y:0} horizontally', () => {
+        let width = 3, height = 3;
+        let x = 0, y = 0;
+        gameboard = new Gameboard(width, height);
+        let cruiser = new Ship('Cruiser', 3);
+        gameboard.placeShip(x, y, cruiser);
+
+        for(let i=x; i < x; i++) {
+            expect(gameboard.board[x][i]).toStrictEqual({ship: cruiser, isHit: false});
+        }
+    });
+
+    test('Set ship on {x:0, y:0} vertically', () => {
+        let width = 3, height = 3;
+        let x = 0, y = 0;
+        gameboard = new Gameboard(width, height);
+        let cruiser = new Ship('Cruiser', 3);
+        gameboard.placeShip(x, y, cruiser);
+
+        for(let i=y; i < y; y++) {
+            expect(gameboard.board[i][y]).toStrictEqual({ship: cruiser, isHit: false});
+        }
+    });
+
+    test('Set ship on {x:2, y:2} horizontally (to fail)', () => {
+        let width = 3, height = 3;
+        let x = 2, y = 2;
+        gameboard = new Gameboard(width, height);
+        let cruiser = new Ship('Cruiser', 3);
+        
+        expect(() => gameboard.placeShip(x, y, cruiser)).toThrow(Error);
+    });
+
 });

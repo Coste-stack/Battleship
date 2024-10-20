@@ -16,10 +16,10 @@ export default class Gameboard {
         this.#height = height;
         
         // create the board, every tile has 'ship' object, and a bool 'isHit'
-        this.#board = new Array(width);
-        for(let i = 0; i < width; i++){
-            this.#board[i] = new Array(height);
-            for(let j = 0; j < height; j++) {
+        this.#board = new Array(height);
+        for(let i = 0; i < height; i++){
+            this.#board[i] = new Array(width);
+            for(let j = 0; j < width; j++) {
                 this.#board[i][j] = {ship: undefined, isHit: false};
             }
         }
@@ -30,24 +30,27 @@ export default class Gameboard {
     get height() { return this.#height; }
     get board() { return this.#board; }
 
-    // change '#board' indexes to 'ship' based on given index 'pos' ('x' or 'y')
-    #placeShipToArray(pos, ship) {
-        for(let i = pos; i < pos+ship.length; i++) {
-            this.#board[i] = ship;
-        }
-    }
-
     placeShip(x, y, ship, orientation = 'x') {
         // check if ship fits the board (based on orientation)
         switch (orientation) {
             case 'x':
             if (x >= 0 && x+ship.length <= this.#width) {
-                this.#placeShipToArray(x, ship);
+                // change '#board' tiles on the horizontal
+                for(let i = x; i < x+ship.length; i++) {
+                    this.#board[y][i] = {ship: ship, isHit: false};
+                }
+            } else {
+                throw new Error('Not enough room for ship to be placed! (horizontally)');
             }
             break;
         case 'y':
             if (y >= 0 && y+ship.length <= this.#height) {
-                this.#placeShipToArray(y, ship);
+                // change '#board' tiles on the vertical
+                for(let i = x; i < x+ship.length; i++) {
+                    this.#board[i][x] = {ship: ship, isHit: false};
+                }
+            } else {
+                throw new Error('Not enough room for ship to be placed! (vertically)');
             }
             break;
         default:
