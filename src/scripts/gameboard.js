@@ -110,9 +110,7 @@ export class Gameboard {
                 this.#board[y][x].ship.hit();
             }
         }
-
     }
-
 
     removeShip(x, y, ship, orientation) {
         switch (orientation) {

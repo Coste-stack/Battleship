@@ -13,26 +13,15 @@ body {
     --ship-color: #2e6b57;
 
     padding: 5px;
-    height: 50vh; width: 50vw;
     background-color: var(--gameboard-background-color);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 5px;
-}
-
-.line {
-    height: 100%; width: 100%;
-    background-color: var(--gameboard-background-color);
-
-    display: flex;
-    align-content: space-between;
+    display: grid;
+    
     gap: 5px;
 }
 
 .tile {
-    height: 100%; width: 20%;
+    height: 50px; width: 50px;
     background-color: var(--tile-color);
 }
 
