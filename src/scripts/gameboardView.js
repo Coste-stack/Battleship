@@ -5,11 +5,13 @@ export function initGameboard(gameboard) {
     grid.style.gridTemplateColumns = `repeat(${gameboard.width}, 1fr)`;
     grid.style.gridTemplateRows = `repeat(${gameboard.height}, 1fr)`;
 
-    // Add empty tiles for the rest of the gameboard
+    // Add empty tiles to every position of gameboard grid
     for (let y = 0; y < gameboard.height; y++) {
         for (let x = 0; x < gameboard.width; x++) {
             const tile = document.createElement('div');
             tile.classList.add('tile');
+
+            // Set the tile position on gameboard grid (using area)
             tile.style.gridRowStart = x + 1;
             tile.style.gridColumnStart = y + 1;
             tile.style.gridRowEnd = x + 1;
@@ -25,11 +27,11 @@ export function initGameboard(gameboard) {
         const ship = document.createElement('div');
         ship.classList.add('ship', shipName);
 
-        // Set the grid position based on orientation
-        ship.style.gridRowStart = startY; // Start row (1-based index)
-        ship.style.gridColumnStart = startX; // Start column (1-based index)
-        ship.style.gridRowEnd = endY; // End row for vertical ships
-        ship.style.gridColumnEnd = endX; // End column for horizontal ships
+        // Set the ship position on gameboard grid (using area)
+        ship.style.gridRowStart = startY;
+        ship.style.gridColumnStart = startX;
+        ship.style.gridRowEnd = endY;
+        ship.style.gridColumnEnd = endX;
 
         grid.appendChild(ship);
     }
