@@ -12,6 +12,7 @@ body {
     --tile-color: #707070;
     --ship-color: #2e6b57;
 
+    min-height: 500px; min-width: 500px;
     padding: 5px;
     background-color: var(--gameboard-background-color);
 
@@ -21,10 +22,12 @@ body {
 }
 
 .tile {
-    height: 50px; width: 50px;
+
     background-color: var(--tile-color);
 }
 
 .ship {
     background-color: var(--ship-color);
+    border: 2px solid #FFD700; /* Gold border for highlighting */
+    box-sizing: border-box;
 }

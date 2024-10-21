@@ -1,6 +1,7 @@
 export class Gameboard {
     #board;
     #width; #height;
+    #shipsOnBoard = {};
 
     // create a board of width x height
     constructor(width, height) {
@@ -29,6 +30,7 @@ export class Gameboard {
     get width() { return this.#width; }
     get height() { return this.#height; }
     get board() { return this.#board; }
+    get shipsOnBoard() { return this.#shipsOnBoard; }
 
     // checks if (on ship placement) there is another ship (that prevents placement)
     canPlaceShip(x, y, ship, orientation) {
@@ -65,6 +67,13 @@ export class Gameboard {
                 for(let i = x; i < x+ship.length; i++) {
                     this.#board[y][i] = {ship: ship, isHit: false};
                 }
+                // add ship coordinates to a list that tracks all of them
+                this.#shipsOnBoard[ship.name] = { 
+                    startX: x + 1,
+                    endX: x + ship.length + 1,
+                    startY: y + 1,
+                    endY: y + 1
+                };
             } else {
                 throw new Error('Not enough room for ship to be placed! (horizontally)');
             }
@@ -78,6 +87,13 @@ export class Gameboard {
                 for(let i = y; i < y+ship.length; i++) {
                     this.#board[i][x] = {ship: ship, isHit: false};
                 }
+                // add ship coordinates to a list that tracks all of them
+                this.#shipsOnBoard[ship.name] = { 
+                    startX: x + 1,
+                    endX: x + 1,
+                    startY: y + 1,
+                    endY: y + ship.length + 1
+                };
             } else {
                 throw new Error('Not enough room for ship to be placed! (vertically)');
             }
