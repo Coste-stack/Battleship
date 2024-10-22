@@ -77,8 +77,8 @@ export class Player {
                 playButton.classList.add('play-button');
                 document.querySelector('.Computer.blinder').appendChild(playButton);
                 playButton.addEventListener('click', () => {
-                    // remove 'randomizeShips' button
-                    RandomizeShips.remove();
+                    // hide 'randomize ships' button to keep space
+                    RandomizeShips.style.visibility = 'hidden';
                     // remove 'play' button
                     playButton.remove();
                     // remove blinder class from wrapper
