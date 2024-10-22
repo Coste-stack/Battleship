@@ -13,9 +13,9 @@ body {
     justify-content: space-evenly;
 }
 
-/* GAMEBOARD WRAPPER ELEMENTS */
+/* PLAYER ITEMS */
 
-.gameboard-container {
+.player-container {
     --gameboard-background-color: #bdbdbd;
     --tile-color: #707070;
     --ship-color: #2e6b57;
@@ -33,6 +33,19 @@ body {
     color: var(--player-font-color);
 }
 
+.blinder {
+    position: relative;
+    background-color: #000000b0;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0.5rem 1rem;
+}
+
 .gameboard {
     min-height: 500px; min-width: 500px;
     padding: 5px;
@@ -40,6 +53,8 @@ body {
 
     display: grid;
     gap: 5px;
+    position: relative;
+    z-index: -1;
 }
 
 .gameboard-container button {

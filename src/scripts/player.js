@@ -22,23 +22,28 @@ export class Player {
     get gameboard() { return this.#gameboard; }
 
     initGameboard() {
-        // CREATE GAMEBOARD CONTAINER
-        const GBContainer = document.createElement('div');
-        GBContainer.classList.add('gameboard-container', this.#type);
-        document.querySelector('#game-wrapper').appendChild(GBContainer);
+        // CREATE PLAYER CONTAINER
+        const PlayerContainer = document.createElement('div');
+        PlayerContainer.classList.add('player-container', this.#type);
+        document.querySelector('#game-wrapper').appendChild(PlayerContainer);
 
         // CREATE PLAYER DISPLAY ABOVE GRID
         const PlayerDisplay = document.createElement('span');
         PlayerDisplay.classList.add('player-display');
         PlayerDisplay.textContent = this.#type;
-        GBContainer.appendChild(PlayerDisplay);
+        PlayerContainer.appendChild(PlayerDisplay);
+
+        // CREATE GAMEBOARD WRAPPER
+        const GBWrapper = document.createElement('div');
+        GBWrapper.classList.add('gameboard-wrapper', this.#type);
 
         // CREATE GRID FOR GAMEBOARD (GB)
         const GB = document.createElement('div');
         GB.classList.add('gameboard');
         GB.style.gridTemplateColumns = `repeat(${this.#gameboard.width}, 1fr)`;
         GB.style.gridTemplateRows = `repeat(${this.#gameboard.height}, 1fr)`;
-        GBContainer.appendChild(GB);
+        GBWrapper.appendChild(GB);
+        PlayerContainer.appendChild(GBWrapper);
 
         // Add empty tiles to every position of gameboard grid
         for (let y = 0; y < this.#gameboard.height; y++) {
@@ -65,6 +70,19 @@ export class Player {
         RandomizeShips.addEventListener('click', () => {
             this.#gameboard.resetBoard();
             this.randomlySetShips();
+            // create a PLAY button (if doesn't exist)
+            if(!document.querySelector('.play-button')) {
+                const playButton = document.createElement('button');
+                playButton.textContent = 'Play';
+                playButton.classList.add('play-button');
+                document.querySelector('.Computer.blinder').appendChild(playButton);
+                playButton.addEventListener('click', () => {
+                    // remove 'randomizeShips' button
+                    // remove 'play' button
+                    // remove blinder class from wrapper
+                    // randomize computer's ships
+                });
+            }
 
             // remove all tiles from previous board
             while (GB.firstChild) {
@@ -108,7 +126,12 @@ export class Player {
         });
 
         if (this.#type === 'Player') {
-            GBContainer.appendChild(RandomizeShips);
+            PlayerContainer.appendChild(RandomizeShips);
+        } 
+        else {
+            // when player is 'Computer'
+            // add a blinder above the gameboard grid
+            GBWrapper.classList.add('blinder');
         }
     }
 
