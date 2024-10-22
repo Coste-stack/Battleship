@@ -78,35 +78,21 @@ export class Player {
                 document.querySelector('.Computer.blinder').appendChild(playButton);
                 playButton.addEventListener('click', () => {
                     // remove 'randomizeShips' button
+                    RandomizeShips.remove();
                     // remove 'play' button
+                    playButton.remove();
                     // remove blinder class from wrapper
+                    document.querySelector('.Computer.blinder').classList.remove('blinder');
                     // randomize computer's ships
+                    this.randomlySetShips();
                 });
             }
 
             // remove all tiles from previous board
-            while (GB.firstChild) {
-                GB.removeChild(GB.firstChild);
-            }
-            
-            // add empty tiles once again
-            for (let y = 0; y < this.#gameboard.height; y++) {
-                for (let x = 0; x < this.#gameboard.width; x++) {
-                    const tile = document.createElement('div');
-                    tile.classList.add('tile');
-        
-                    // Set the tile position on gameboard grid (using area)
-                    tile.style.gridRowStart = x + 1;
-                    tile.style.gridColumnStart = y + 1;
-                    tile.style.gridRowEnd = x + 1;
-                    tile.style.gridColumnEnd = y + 1;
-                    GB.appendChild(tile);
-        
-                    tile.addEventListener('click', () => {
-                        // ADD LOGIC TO HITTING SHIPS (?)
-                    });
-                }
-            }
+            let shipsToDelete = document.querySelectorAll('.ship');
+            shipsToDelete.forEach(ship => {
+                GB.removeChild(ship);
+            });
 
             // ADD SHIPS TO THE GAMEBOARD
             for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
