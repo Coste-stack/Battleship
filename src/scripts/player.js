@@ -1,43 +1,55 @@
-import { Gameboard } from "./gameboard";
-
 export class Player {
     #type;
     #gameboard;
     #ships;
     
-    constructor(ships, type) {
+    constructor(gameboard, ships, type) {
         if (type !== 'Player' && type !== 'Computer') {
             throw new Error('Type for Player is invalid! (put "player" or "computer")');
         }
         this.#type = type;
         this.#ships = ships;
-        this.#gameboard = new Gameboard(7, 7);
-
-        // Initialize the gameboard DOM creation
-        this.initGameboard();
+        this.#gameboard = gameboard;
     }
 
     get ships() { return this.#ships; }
     get type() { return this.#type; }
     get gameboard() { return this.#gameboard; }
 
+    startGame() {
+        // add EventListeners to all '.tiles' to get player attacks
+        const tiles = document.querySelector('.Computer').querySelectorAll('.tile');
+        tiles.forEach(tile => {
+            tile.addEventListener('click', () => {
+                // TO FIX, CAN'T CLICK !!!
+
+                // player attack turn
+                this.#gameboard.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
+                this.#gameboard.printBoard();
+                // computer attack turn
+                playerTurn = false;
+            });
+        });
+    }
+
+    // Initialize the gameboard DOM creation
     initGameboard() {
-        // CREATE PLAYER CONTAINER
+        // create PLAYER CONTAINER
         const PlayerContainer = document.createElement('div');
         PlayerContainer.classList.add('player-container', this.#type);
         document.querySelector('#game-wrapper').appendChild(PlayerContainer);
 
-        // CREATE PLAYER DISPLAY ABOVE GRID
+        // create PLAYER INFO above gameboard grid
         const PlayerDisplay = document.createElement('span');
         PlayerDisplay.classList.add('player-display');
         PlayerDisplay.textContent = this.#type;
         PlayerContainer.appendChild(PlayerDisplay);
 
-        // CREATE GAMEBOARD WRAPPER
+        // create GAMEBOARD WRAPPER
         const GBWrapper = document.createElement('div');
         GBWrapper.classList.add('gameboard-wrapper', this.#type);
 
-        // CREATE GRID FOR GAMEBOARD (GB)
+        // create GRID FOR GAMEBOARD (GB)
         const GB = document.createElement('div');
         GB.classList.add('gameboard');
         GB.style.gridTemplateColumns = `repeat(${this.#gameboard.width}, 1fr)`;
@@ -57,67 +69,76 @@ export class Player {
                 tile.style.gridRowEnd = x + 1;
                 tile.style.gridColumnEnd = y + 1;
                 GB.appendChild(tile);
-    
-                tile.addEventListener('click', () => {
-                    // ADD LOGIC TO HITTING SHIPS (?)
-                });
             }
         }
-        
-        // CREATE RANDOMIZE SHIPS BUTTON
-        const RandomizeShips = document.createElement('button');
-        RandomizeShips.textContent = 'Randomize Ships';
-        RandomizeShips.addEventListener('click', () => {
-            this.#gameboard.resetBoard();
+    }
+
+    #createPlayButton() {
+        const playButton = document.createElement('button');
+        playButton.textContent = 'Play';
+        playButton.classList.add('play-button');
+        document.querySelector('.Computer.blinder').appendChild(playButton);
+
+        playButton.addEventListener('click', () => {
+            // hide 'randomize ships' button to keep space
+            document.querySelector('.randomize-button').style.visibility = 'hidden';
+            // remove 'play' button
+            playButton.remove();
+            // remove blinder class from wrapper
+            document.querySelector('.Computer.blinder').classList.remove('blinder');
+            // RANDOMIZE COMPUTERS's SHIPS
             this.randomlySetShips();
-            // create a PLAY button (if doesn't exist)
-            if(!document.querySelector('.play-button')) {
-                const playButton = document.createElement('button');
-                playButton.textContent = 'Play';
-                playButton.classList.add('play-button');
-                document.querySelector('.Computer.blinder').appendChild(playButton);
-                playButton.addEventListener('click', () => {
-                    // hide 'randomize ships' button to keep space
-                    RandomizeShips.style.visibility = 'hidden';
-                    // remove 'play' button
-                    playButton.remove();
-                    // remove blinder class from wrapper
-                    document.querySelector('.Computer.blinder').classList.remove('blinder');
-                    // randomize computer's ships
-                    this.randomlySetShips();
-                });
-            }
-
-            // remove all tiles from previous board
-            let shipsToDelete = document.querySelectorAll('.ship');
-            shipsToDelete.forEach(ship => {
-                GB.removeChild(ship);
-            });
-
-            // ADD SHIPS TO THE GAMEBOARD
-            for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
-                const { startX, endX, startY, endY } = shipData;
-        
-                const ship = document.createElement('div');
-                ship.classList.add('ship', shipName);
-        
-                // Set the ship position on gameboard grid (using area)
-                ship.style.gridRowStart = startY;
-                ship.style.gridColumnStart = startX;
-                ship.style.gridRowEnd = endY;
-                ship.style.gridColumnEnd = endX;
-        
-                GB.appendChild(ship);
-            }
+            // START GAME TURNS
+            this.startGame();
         });
+    }
 
+    addPlayMenu() {
+        // add a BLINDER (if there's none)
+        if (!document.querySelector('.gameboard-wrapper.Computer').classList.contains('blinder')) {
+            document.querySelector('.gameboard-wrapper.Computer').classList.add('blinder');
+        }
+        // create a PLAY BUTTON  if there are ships  placed (and if it doesn't exist)
+        if(document.querySelectorAll('ship') === null && !document.querySelector('.play-button')) {
+            this.#createPlayButton();
+        }
+    }
+
+    addRandomizeShipsButton() {
         if (this.#type === 'Player') {
-            PlayerContainer.appendChild(RandomizeShips);
-        } 
-        else {
-            // when player is 'Computer'
-            // add a blinder above the gameboard grid
-            GBWrapper.classList.add('blinder');
+            const GB = document.querySelector('.Player .gameboard');
+            // create RANDOMIZE SHIPS BUTTON
+            const RandomizeShips = document.createElement('button');
+            RandomizeShips.textContent = 'Randomize Ships';
+            RandomizeShips.classList.add('randomize-button');
+
+            RandomizeShips.addEventListener('click', () => {
+                this.#gameboard.resetBoard();
+                this.randomlySetShips();
+
+                // REMOVE ALL SHIPS from previous board
+                let shipsToDelete = document.querySelectorAll('.ship');
+                shipsToDelete.forEach(ship => {
+                    GB.removeChild(ship);
+                });
+
+                // ADD SHIPS to the gameboard
+                for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
+                    const { startX, endX, startY, endY } = shipData;
+            
+                    const ship = document.createElement('div');
+                    ship.classList.add('ship', shipName);
+            
+                    // Set the ship position on gameboard grid (using area)
+                    ship.style.gridRowStart = startY;
+                    ship.style.gridColumnStart = startX;
+                    ship.style.gridRowEnd = endY;
+                    ship.style.gridColumnEnd = endX;
+            
+                    GB.appendChild(ship);
+                }
+            });
+            document.querySelector('.player-container.Player').appendChild(RandomizeShips);
         }
     }
 
@@ -127,6 +148,7 @@ export class Player {
         if (!this.#randomlySetShipsBacktrack(shipsData, 0)) {
             throw new Error('Unable to place all ships!');
         }
+        this.#gameboard.printBoard();
     }
 
     #randomlySetShipsBacktrack(shipsData, index) {
