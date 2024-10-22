@@ -14,7 +14,6 @@ describe('Player Class', () => {
         const ships = [];
         Object.entries(shipsInitial).forEach(([ship, length]) => {
             const shipObj = new Ship(ship, length); 
-            console.log(`${ship}: ${length}`);
             ships.push(shipObj);
         });
 

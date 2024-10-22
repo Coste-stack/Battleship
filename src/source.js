@@ -3,7 +3,6 @@ import './style.css';
 
 import { Ship } from './scripts/ship.js';
 import { Player } from './scripts/player.js';
-import { initGameboard } from './scripts/gameboardView.js';
 
 (function main() {
 
@@ -23,7 +22,6 @@ import { initGameboard } from './scripts/gameboardView.js';
         const player2 = new Player('computer');
 
         player1.randomlySetShips(ships);
-        initGameboard(player1.gameboard);
 
     } catch (e) {
         console.error(e);
