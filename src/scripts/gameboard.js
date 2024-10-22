@@ -32,6 +32,15 @@ export class Gameboard {
     get board() { return this.#board; }
     get shipsOnBoard() { return this.#shipsOnBoard; }
 
+    resetBoard() {
+        for(let i = 0; i < this.#height; i++) {
+            for(let j = 0; j < this.#width; j++) {
+                this.#board[i][j].ship = undefined;
+                this.#board[i][j].isHit = false;
+            }
+        }
+    }
+
     // checks if (on ship placement) there is another ship (that prevents placement)
     canPlaceShip(x, y, ship, orientation) {
         switch (orientation) {
@@ -129,6 +138,9 @@ export class Gameboard {
     }
 
     removeShip(x, y, ship, orientation) {
+        console.log('before remove');
+        this.printBoard();
+        console.log(`removing x: ${x}, y: ${y}, ship: ${ship}, orientation: ${orientation}`);
         switch (orientation) {
             case 'x':
                 for(let i = x; i < x+ship.length; i++) {
@@ -143,5 +155,7 @@ export class Gameboard {
             default:
                 throw new Error('invalid passed "orientation"! (When removing a ship)');
         }
+        console.log('after remove');
+        this.printBoard();
     }
 }

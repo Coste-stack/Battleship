@@ -63,7 +63,9 @@ export class Player {
         const RandomizeShips = document.createElement('button');
         RandomizeShips.textContent = 'Randomize Ships';
         RandomizeShips.addEventListener('click', () => {
+            this.#gameboard.resetBoard();
             this.randomlySetShips();
+
             // remove all tiles from previous board
             while (GB.firstChild) {
                 GB.removeChild(GB.firstChild);
@@ -112,19 +114,19 @@ export class Player {
 
     randomlySetShips() {
         // Start the backtracking process with the first ship
-        let ships = this.#ships;
-        if (!this.#randomlySetShipsBacktrack(ships, 0)) {
+        let shipsData = this.#ships;
+        if (!this.#randomlySetShipsBacktrack(shipsData, 0)) {
             throw new Error('Unable to place all ships!');
         }
     }
 
-    #randomlySetShipsBacktrack(ships, index) {
+    #randomlySetShipsBacktrack(shipsData, index) {
         // end backtracking (all ships placed)
-        if (index === ships.length) {
+        if (index === shipsData.length) {
             return true;
         }
 
-        const ship = ships[index];
+        const ship = shipsData[index];
         const validPositions = this.#getValidPositions(ship);
 
         // Shuffle the valid positions to introduce randomness
@@ -132,11 +134,16 @@ export class Player {
 
         // Try each valid position
         for (const { x, y, orientation } of validPositions) {
-            // Place the ship
-            this.#gameboard.placeShip(x, y, ship, orientation);
+            try {
+                // try to place the ship
+                this.#gameboard.placeShip(x, y, ship, orientation);
+            } catch (e) {
+                // if it can't be done then go to next iteration
+                continue;
+            }
 
             // Recursively place the next ship
-            if (this.#randomlySetShipsBacktrack(ships, index + 1)) {
+            if (this.#randomlySetShipsBacktrack(shipsData, index + 1)) {
                 return true;
             }
 
