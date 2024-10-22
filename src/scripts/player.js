@@ -3,26 +3,43 @@ import { Gameboard } from "./gameboard";
 export class Player {
     #type;
     #gameboard;
+    #ships;
     
-    constructor(type) {
-        if (type !== 'player' && type !== 'computer') {
+    constructor(ships, type) {
+        if (type !== 'Player' && type !== 'Computer') {
             throw new Error('Type for Player is invalid! (put "player" or "computer")');
         }
         this.#type = type;
-        this.#gameboard = new Gameboard(5, 5);
+        this.#ships = ships;
+        this.#gameboard = new Gameboard(7, 7);
+
+        // Initialize the gameboard DOM creation
         this.initGameboard();
     }
 
+    get ships() { return this.#ships; }
     get type() { return this.#type; }
     get gameboard() { return this.#gameboard; }
 
     initGameboard() {
-        // Create a gameboard container
-        const grid = document.createElement('div');
-        grid.classList.add('gameboard');
-        grid.style.gridTemplateColumns = `repeat(${this.#gameboard.width}, 1fr)`;
-        grid.style.gridTemplateRows = `repeat(${this.#gameboard.height}, 1fr)`;
-    
+        // CREATE GAMEBOARD CONTAINER
+        const GBContainer = document.createElement('div');
+        GBContainer.classList.add('gameboard-container', this.#type);
+        document.querySelector('#game-wrapper').appendChild(GBContainer);
+
+        // CREATE PLAYER DISPLAY ABOVE GRID
+        const PlayerDisplay = document.createElement('span');
+        PlayerDisplay.classList.add('player-display');
+        PlayerDisplay.textContent = this.#type;
+        GBContainer.appendChild(PlayerDisplay);
+
+        // CREATE GRID FOR GAMEBOARD (GB)
+        const GB = document.createElement('div');
+        GB.classList.add('gameboard');
+        GB.style.gridTemplateColumns = `repeat(${this.#gameboard.width}, 1fr)`;
+        GB.style.gridTemplateRows = `repeat(${this.#gameboard.height}, 1fr)`;
+        GBContainer.appendChild(GB);
+
         // Add empty tiles to every position of gameboard grid
         for (let y = 0; y < this.#gameboard.height; y++) {
             for (let x = 0; x < this.#gameboard.width; x++) {
@@ -34,35 +51,68 @@ export class Player {
                 tile.style.gridColumnStart = y + 1;
                 tile.style.gridRowEnd = x + 1;
                 tile.style.gridColumnEnd = y + 1;
-                grid.appendChild(tile);
+                GB.appendChild(tile);
     
                 tile.addEventListener('click', () => {
                     // ADD LOGIC TO HITTING SHIPS (?)
                 });
             }
         }
-    
-        // Iterate through the ships on the board
-        for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
-            const { startX, endX, startY, endY } = shipData;
-    
-            const ship = document.createElement('div');
-            ship.classList.add('ship', shipName);
-    
-            // Set the ship position on gameboard grid (using area)
-            ship.style.gridRowStart = startY;
-            ship.style.gridColumnStart = startX;
-            ship.style.gridRowEnd = endY;
-            ship.style.gridColumnEnd = endX;
-    
-            grid.appendChild(ship);
+        
+        // CREATE RANDOMIZE SHIPS BUTTON
+        const RandomizeShips = document.createElement('button');
+        RandomizeShips.textContent = 'Randomize Ships';
+        RandomizeShips.addEventListener('click', () => {
+            this.randomlySetShips();
+            // remove all tiles from previous board
+            while (GB.firstChild) {
+                GB.removeChild(GB.firstChild);
+            }
+            
+            // add empty tiles once again
+            for (let y = 0; y < this.#gameboard.height; y++) {
+                for (let x = 0; x < this.#gameboard.width; x++) {
+                    const tile = document.createElement('div');
+                    tile.classList.add('tile');
+        
+                    // Set the tile position on gameboard grid (using area)
+                    tile.style.gridRowStart = x + 1;
+                    tile.style.gridColumnStart = y + 1;
+                    tile.style.gridRowEnd = x + 1;
+                    tile.style.gridColumnEnd = y + 1;
+                    GB.appendChild(tile);
+        
+                    tile.addEventListener('click', () => {
+                        // ADD LOGIC TO HITTING SHIPS (?)
+                    });
+                }
+            }
+
+            // ADD SHIPS TO THE GAMEBOARD
+            for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
+                const { startX, endX, startY, endY } = shipData;
+        
+                const ship = document.createElement('div');
+                ship.classList.add('ship', shipName);
+        
+                // Set the ship position on gameboard grid (using area)
+                ship.style.gridRowStart = startY;
+                ship.style.gridColumnStart = startX;
+                ship.style.gridRowEnd = endY;
+                ship.style.gridColumnEnd = endX;
+        
+                GB.appendChild(ship);
+            }
+        });
+
+        if (this.#type === 'Player') {
+            GBContainer.appendChild(RandomizeShips);
         }
-    
-        document.querySelector('body').appendChild(grid);
     }
 
-    randomlySetShips(ships) {
+    randomlySetShips() {
         // Start the backtracking process with the first ship
+        let ships = this.#ships;
         if (!this.#randomlySetShipsBacktrack(ships, 0)) {
             throw new Error('Unable to place all ships!');
         }

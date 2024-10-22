@@ -18,10 +18,8 @@ import { Player } from './scripts/player.js';
         });
 
         // initialize Gameboard via Player
-        const player1 = new Player('player');
-        const player2 = new Player('computer');
-
-        player1.randomlySetShips(ships);
+        new Player(ships, 'Player');
+        new Player(ships, 'Computer');
 
     } catch (e) {
         console.error(e);
