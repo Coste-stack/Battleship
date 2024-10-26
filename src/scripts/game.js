@@ -40,11 +40,15 @@ export class Game {
         const tiles = document.querySelector('.Computer .gameboard').querySelectorAll('.tile');
 
         let attack;
+        let attackEffect;
         tiles.forEach(tile => {
             tile.addEventListener('click', () => {
                 // player attack turn
                 attack = this.#computer.gameboard.receiveAttack(tile.style.gridColumnStart-1, tile.style.gridRowStart-1);
-                tile.classList.add(attack);
+
+                attackEffect = document.createElement('div');
+                attackEffect.classList.add(attack);
+                tile.appendChild(attackEffect);
 
                 // computer attack turn
                 const playerTiles = document.querySelector('.Player .gameboard').querySelectorAll('.tile');
@@ -53,7 +57,10 @@ export class Game {
                 console.log(x, y, y+x*this.#playerGB.height);
                 this.#player.gameboard.printBoard();
                 attack = this.#player.gameboard.receiveAttack(x, y);
-                playerTiles[y+x*this.#playerGB.height].classList.add(attack);
+
+                attackEffect = document.createElement('div');
+                attackEffect.classList.add(attack);
+                playerTiles[y+x*this.#playerGB.height].appendChild(attackEffect);
             });
         });
     }

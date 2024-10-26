@@ -89,9 +89,23 @@ body {
 .tile {
     background-color: var(--tile-color);
     aspect-ratio: 1;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.tile.hit { background-color: var(--tile-color-hit); }
-.tile.miss { background-color: var(--tile-color-miss); }
+.miss, .hit {
+    width: 80%;
+    height: 80%;
+}
+.tile .miss {
+    background-color: var(--tile-color-miss);
+}
+.tile .hit {
+    position: relative;
+    background-color: var(--tile-color-hit);
+}
+
 
 .ship {
     background-color: var(--ship-color);
