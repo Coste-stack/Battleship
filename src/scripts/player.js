@@ -105,8 +105,26 @@ export class Player {
         
                 GB.appendChild(ship);
             }
+
+            // Dispatch custom event after ships are randomized
+            document.dispatchEvent(new CustomEvent('shipsRandomized', { detail: { type: this.#type } }));
         });
         document.querySelector(`.${this.#type}.player-container`).appendChild(RandomizeShips);
+    }
+
+
+    addPlayMenu() {
+        // add a BLINDER (if there's none)
+        const computerGB = document.querySelector('.gameboard-wrapper.Computer')
+        if (computerGB && !computerGB.classList.contains('blinder')) {
+            document.querySelector('.gameboard-wrapper.Computer').classList.add('blinder');
+        }
+
+        // dispatchEvent to create a PLAY BUTTON when there are ships placed 
+        document.addEventListener('shipsRandomized', (event) => {
+            // (pass 'type' from which the ships were randomized)
+            document.dispatchEvent(new CustomEvent('playReady', { detail: { type: event.detail.type } }));
+        });
     }
 
 
