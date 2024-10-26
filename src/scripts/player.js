@@ -12,25 +12,24 @@ export class Player {
         this.#gameboard = gameboard;
     }
 
-    get ships() { return this.#ships; }
     get type() { return this.#type; }
     get gameboard() { return this.#gameboard; }
 
-    startGame() {
-        // add EventListeners to all '.tiles' to get player attacks
-        const tiles = document.querySelector('.Computer').querySelectorAll('.tile');
-        tiles.forEach(tile => {
-            tile.addEventListener('click', () => {
-                // TO FIX, CAN'T CLICK !!!
+    // startGame() {
+    //     // add EventListeners to all '.tiles' to get player attacks
+    //     const tiles = document.querySelector('.Computer').querySelectorAll('.tile');
+    //     tiles.forEach(tile => {
+    //         tile.addEventListener('click', () => {
+    //             // TO FIX, CAN'T CLICK !!!
 
-                // player attack turn
-                this.#gameboard.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
-                this.#gameboard.printBoard();
-                // computer attack turn
-                playerTurn = false;
-            });
-        });
-    }
+    //             // player attack turn
+    //             this.#gameboard.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
+    //             this.#gameboard.printBoard();
+    //             // computer attack turn
+    //             playerTurn = false;
+    //         });
+    //     });
+    // }
 
     // Initialize the gameboard DOM creation
     initGameboard() {
@@ -73,74 +72,43 @@ export class Player {
         }
     }
 
-    #createPlayButton() {
-        const playButton = document.createElement('button');
-        playButton.textContent = 'Play';
-        playButton.classList.add('play-button');
-        document.querySelector('.Computer.blinder').appendChild(playButton);
-
-        playButton.addEventListener('click', () => {
-            // hide 'randomize ships' button to keep space
-            document.querySelector('.randomize-button').style.visibility = 'hidden';
-            // remove 'play' button
-            playButton.remove();
-            // remove blinder class from wrapper
-            document.querySelector('.Computer.blinder').classList.remove('blinder');
-            // RANDOMIZE COMPUTERS's SHIPS
-            this.randomlySetShips();
-            // START GAME TURNS
-            this.startGame();
-        });
-    }
-
-    addPlayMenu() {
-        // add a BLINDER (if there's none)
-        if (!document.querySelector('.gameboard-wrapper.Computer').classList.contains('blinder')) {
-            document.querySelector('.gameboard-wrapper.Computer').classList.add('blinder');
-        }
-        // create a PLAY BUTTON  if there are ships  placed (and if it doesn't exist)
-        if(document.querySelectorAll('ship') === null && !document.querySelector('.play-button')) {
-            this.#createPlayButton();
-        }
-    }
 
     addRandomizeShipsButton() {
-        if (this.#type === 'Player') {
-            const GB = document.querySelector('.Player .gameboard');
-            // create RANDOMIZE SHIPS BUTTON
-            const RandomizeShips = document.createElement('button');
-            RandomizeShips.textContent = 'Randomize Ships';
-            RandomizeShips.classList.add('randomize-button');
+        const GB = document.querySelector(`.${this.#type} .gameboard`);
+        // create RANDOMIZE SHIPS BUTTON
+        const RandomizeShips = document.createElement('button');
+        RandomizeShips.textContent = 'Randomize Ships';
+        RandomizeShips.classList.add('randomize-button');
 
-            RandomizeShips.addEventListener('click', () => {
-                this.#gameboard.resetBoard();
-                this.randomlySetShips();
+        RandomizeShips.addEventListener('click', () => {
+            this.#gameboard.resetBoard();
+            this.randomlySetShips();
 
-                // REMOVE ALL SHIPS from previous board
-                let shipsToDelete = document.querySelectorAll('.ship');
-                shipsToDelete.forEach(ship => {
-                    GB.removeChild(ship);
-                });
-
-                // ADD SHIPS to the gameboard
-                for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
-                    const { startX, endX, startY, endY } = shipData;
-            
-                    const ship = document.createElement('div');
-                    ship.classList.add('ship', shipName);
-            
-                    // Set the ship position on gameboard grid (using area)
-                    ship.style.gridRowStart = startY;
-                    ship.style.gridColumnStart = startX;
-                    ship.style.gridRowEnd = endY;
-                    ship.style.gridColumnEnd = endX;
-            
-                    GB.appendChild(ship);
-                }
+            // REMOVE ALL SHIPS from previous board
+            let shipsToDelete = GB.querySelectorAll('.ship');
+            shipsToDelete.forEach(ship => {
+                GB.removeChild(ship);
             });
-            document.querySelector('.player-container.Player').appendChild(RandomizeShips);
-        }
+
+            // ADD SHIPS to the gameboard
+            for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
+                const { startX, endX, startY, endY } = shipData;
+        
+                const ship = document.createElement('div');
+                ship.classList.add('ship', shipName);
+        
+                // Set the ship position on gameboard grid (using area)
+                ship.style.gridRowStart = startY;
+                ship.style.gridColumnStart = startX;
+                ship.style.gridRowEnd = endY;
+                ship.style.gridColumnEnd = endX;
+        
+                GB.appendChild(ship);
+            }
+        });
+        document.querySelector(`.${this.#type}.player-container`).appendChild(RandomizeShips);
     }
+
 
     randomlySetShips() {
         // Start the backtracking process with the first ship
