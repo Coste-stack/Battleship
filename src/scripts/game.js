@@ -1,14 +1,23 @@
 import { Player } from './player.js';
+import { Gameboard } from './gameboard.js';
 
 export class Game {
     #player; #computer;
+    #playerGB; #computerGB;
     
-    constructor(gameboard, ships) {
+    constructor(ships) {
+        // Initialize Gameboards
+        const playerGB = new Gameboard(5, 5);
+        const computerGB = new Gameboard(5, 5);
+
         // Initialize Players
-        const player = new Player(gameboard, ships, 'Player');
-        const computer = new Player(gameboard, ships, 'Computer');
+        const player = new Player(playerGB, ships, 'Player');
+        const computer = new Player(computerGB, ships, 'Computer');
+
         this.#player = player;
         this.#computer = computer;
+        this.#playerGB = playerGB;
+        this.#computerGB = computerGB;
 
         // Use methods to initialize the game 
         player.initGameboard();
@@ -30,14 +39,21 @@ export class Game {
         // add EventListeners to all '.tiles' to get player attacks
         const tiles = document.querySelector('.Computer .gameboard').querySelectorAll('.tile');
 
+        let attack;
         tiles.forEach(tile => {
             tile.addEventListener('click', () => {
-                console.log(111);
                 // player attack turn
-                const attack = this.#player.gameboard.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
+                attack = this.#computer.gameboard.receiveAttack(tile.style.gridColumnStart-1, tile.style.gridRowStart-1);
                 tile.classList.add(attack);
-                this.#player.gameboard.printBoard();
+
                 // computer attack turn
+                const playerTiles = document.querySelector('.Player .gameboard').querySelectorAll('.tile');
+                const x = Math.floor(Math.random() * this.#playerGB.width);
+                const y = Math.floor(Math.random() * this.#playerGB.height);
+                console.log(x, y, y+x*this.#playerGB.height);
+                this.#player.gameboard.printBoard();
+                attack = this.#player.gameboard.receiveAttack(x, y);
+                playerTiles[y+x*this.#playerGB.height].classList.add(attack);
             });
         });
     }

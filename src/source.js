@@ -2,7 +2,6 @@ import './reset.css';
 import './style.css';
 
 import { Ship } from './scripts/ship.js';
-import { Gameboard } from './scripts/gameboard.js';
 import { Game } from './scripts/game.js';
 
 (function main() {
@@ -17,8 +16,7 @@ import { Game } from './scripts/game.js';
             ships.push(shipObj);
         });
 
-        const gameboard = new Gameboard(7, 7);
-        new Game(gameboard, ships);
+        new Game(ships);
 
     } catch (e) {
         console.error(e);
