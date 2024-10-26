@@ -3,12 +3,14 @@ import { Gameboard } from './gameboard.js';
 
 export class Game {
     #player; #computer;
-    #playerGB; #computerGB;
+    #GBwidth; #GBheight;
     
     constructor(ships) {
         // Initialize Gameboards
-        const playerGB = new Gameboard(5, 5);
-        const computerGB = new Gameboard(5, 5);
+        const GBwidth = 5;
+        const GBheight = 5;
+        const playerGB = new Gameboard(GBwidth, GBheight);
+        const computerGB = new Gameboard(GBwidth, GBheight);
 
         // Initialize Players
         const player = new Player(playerGB, ships, 'Player');
@@ -16,8 +18,8 @@ export class Game {
 
         this.#player = player;
         this.#computer = computer;
-        this.#playerGB = playerGB;
-        this.#computerGB = computerGB;
+        this.#GBwidth = GBwidth;
+        this.#GBheight = GBheight;
 
         // Use methods to initialize the game 
         player.initGameboard();
@@ -41,26 +43,46 @@ export class Game {
 
         let attack;
         let attackEffect;
+        let computerAttacks = new Array();
+        for (let x = 0; x < this.#GBwidth; x++) {
+            for (let y = 0; y < this.#GBheight; y++) {
+                computerAttacks.push({x: x, y: y});
+            }
+        }
+
         tiles.forEach(tile => {
             tile.addEventListener('click', () => {
-                // player attack turn
-                attack = this.#computer.gameboard.receiveAttack(tile.style.gridColumnStart-1, tile.style.gridRowStart-1);
+                let playerTurn = true;
+                // PLAYER ATTACK TURN
+                try {
+                    attack = this.#computer.gameboard.receiveAttack(tile.style.gridColumnStart-1, tile.style.gridRowStart-1);
 
-                attackEffect = document.createElement('div');
-                attackEffect.classList.add(attack);
-                tile.appendChild(attackEffect);
+                    attackEffect = document.createElement('div');
+                    attackEffect.classList.add(attack);
+                    tile.appendChild(attackEffect);
+                    playerTurn = false;
+                } catch (err) {
+                    console.error(err);
+                }
+                
+                // COMPUTER ATTACK TURN
+                if (!playerTurn) {
+                    const playerTiles = document.querySelector('.Player .gameboard').querySelectorAll('.tile');
 
-                // computer attack turn
-                const playerTiles = document.querySelector('.Player .gameboard').querySelectorAll('.tile');
-                const x = Math.floor(Math.random() * this.#playerGB.width);
-                const y = Math.floor(Math.random() * this.#playerGB.height);
-                console.log(x, y, y+x*this.#playerGB.height);
-                this.#player.gameboard.printBoard();
-                attack = this.#player.gameboard.receiveAttack(x, y);
+                    const index = Math.floor(Math.random() * computerAttacks.length);
+                    const {x, y} = computerAttacks.splice(index, 1)[0]; // get element and remove it
 
-                attackEffect = document.createElement('div');
-                attackEffect.classList.add(attack);
-                playerTiles[y+x*this.#playerGB.height].appendChild(attackEffect);
+                    try {
+                        attack = this.#player.gameboard.receiveAttack(x, y);
+
+                        attackEffect = document.createElement('div');
+                        attackEffect.classList.add(attack);
+                        playerTiles[y+x*this.#GBheight].appendChild(attackEffect);
+                        playerTurn = true;
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
             });
         });
     }
