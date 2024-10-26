@@ -15,22 +15,6 @@ export class Player {
     get type() { return this.#type; }
     get gameboard() { return this.#gameboard; }
 
-    // startGame() {
-    //     // add EventListeners to all '.tiles' to get player attacks
-    //     const tiles = document.querySelector('.Computer').querySelectorAll('.tile');
-    //     tiles.forEach(tile => {
-    //         tile.addEventListener('click', () => {
-    //             // TO FIX, CAN'T CLICK !!!
-
-    //             // player attack turn
-    //             this.#gameboard.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
-    //             this.#gameboard.printBoard();
-    //             // computer attack turn
-    //             playerTurn = false;
-    //         });
-    //     });
-    // }
-
     // Initialize the gameboard DOM creation
     initGameboard() {
         // create PLAYER CONTAINER
@@ -81,7 +65,6 @@ export class Player {
         RandomizeShips.classList.add('randomize-button');
 
         RandomizeShips.addEventListener('click', () => {
-            this.#gameboard.resetBoard();
             this.randomlySetShips();
 
             // REMOVE ALL SHIPS from previous board
@@ -115,9 +98,9 @@ export class Player {
 
     addPlayMenu() {
         // add a BLINDER (if there's none)
-        const computerGB = document.querySelector('.gameboard-wrapper.Computer')
+        const computerGB = document.querySelector('.Computer .gameboard')
         if (computerGB && !computerGB.classList.contains('blinder')) {
-            document.querySelector('.gameboard-wrapper.Computer').classList.add('blinder');
+            computerGB.classList.add('blinder');
         }
 
         // dispatchEvent to create a PLAY BUTTON when there are ships placed 
@@ -129,6 +112,7 @@ export class Player {
 
 
     randomlySetShips() {
+        this.#gameboard.resetBoard();
         // Start the backtracking process with the first ship
         let shipsData = this.#ships;
         if (!this.#randomlySetShipsBacktrack(shipsData, 0)) {

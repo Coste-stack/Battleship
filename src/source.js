@@ -18,7 +18,7 @@ import { Game } from './scripts/game.js';
         });
 
         const gameboard = new Gameboard(7, 7);
-        const game = new Game(gameboard, ships);
+        new Game(gameboard, ships);
 
     } catch (e) {
         console.error(e);
