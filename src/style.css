@@ -19,6 +19,8 @@ body {
 .player-container {
     --gameboard-background-color: #bdbdbd;
     --tile-color: #707070;
+    --tile-color-hit: #6d3333;
+    --tile-color-miss: #2b2727;
     --ship-color: #2e6b57;
     --player-font-color: #9ec6e7;
     --button-font-color: #000000;
@@ -88,6 +90,8 @@ body {
     background-color: var(--tile-color);
     aspect-ratio: 1;
 }
+.tile.hit { background-color: var(--tile-color-hit); }
+.tile.miss { background-color: var(--tile-color-miss); }
 
 .ship {
     background-color: var(--ship-color);

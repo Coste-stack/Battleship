@@ -144,10 +144,12 @@ export class Gameboard {
             if (this.#board[y][x].ship === undefined) {
                 // not a ship, MISSED!
                 this.#board[y][x].isHit = true;
+                return 'miss';
             } else if (typeof this.#board[y][x].ship === 'object') {
                 // a ship, HIT!
                 this.#board[y][x].isHit = true;
                 this.#board[y][x].ship.hit();
+                return 'hit';
             }
         }
     }

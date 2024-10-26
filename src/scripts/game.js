@@ -33,13 +33,11 @@ export class Game {
         tiles.forEach(tile => {
             tile.addEventListener('click', () => {
                 console.log(111);
-                // TO FIX, CAN'T CLICK !!!
-
                 // player attack turn
-                this.#player.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
-                this.#player.printBoard();
+                const attack = this.#player.gameboard.receiveAttack(tile.style.gridRowStart-1, tile.style.gridColumnStart-1);
+                tile.classList.add(attack);
+                this.#player.gameboard.printBoard();
                 // computer attack turn
-                playerTurn = false;
             });
         });
     }
