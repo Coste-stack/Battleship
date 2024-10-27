@@ -47,10 +47,10 @@ export class Player {
                 tile.classList.add('tile');
     
                 // Set the tile position on gameboard grid (using area)
-                tile.style.gridRowStart = x + 1;
-                tile.style.gridColumnStart = y + 1;
-                tile.style.gridRowEnd = x + 1;
-                tile.style.gridColumnEnd = y + 1;
+                // tile.style.gridRowStart = x + 1;
+                // tile.style.gridColumnStart = y + 1;
+                // tile.style.gridRowEnd = x + 1;
+                // tile.style.gridColumnEnd = y + 1;
                 GB.appendChild(tile);
             }
         }
