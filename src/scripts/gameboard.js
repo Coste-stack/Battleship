@@ -96,7 +96,9 @@ export class Gameboard {
                     startX: x + 1,
                     endX: x + ship.length + 1,
                     startY: y + 1,
-                    endY: y + 1
+                    endY: y + 1,
+                    orientation: orientation,
+                    length: ship.length
                 };
             } else {
                 throw new Error('Not enough room for ship to be placed! (horizontally)');
@@ -116,7 +118,9 @@ export class Gameboard {
                     startX: x + 1,
                     endX: x + 1,
                     startY: y + 1,
-                    endY: y + ship.length + 1
+                    endY: y + ship.length + 1,
+                    orientation: orientation,
+                    length: ship.length
                 };
             } else {
                 throw new Error('Not enough room for ship to be placed! (vertically)');

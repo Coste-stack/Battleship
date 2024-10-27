@@ -1,3 +1,5 @@
+import { ShipDragHandler } from "./shipDragHandler";
+
 export class Player {
     #type;
     #gameboard;
@@ -49,6 +51,9 @@ export class Player {
                 GB.removeChild(ship);
             });
 
+            // allow dragging for gameboard
+            const dragObj = new ShipDragHandler(this.#gameboard);
+
             // ADD SHIPS to the gameboard
             for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
                 const { startX, endX, startY, endY } = shipData;
@@ -56,6 +61,8 @@ export class Player {
                 const ship = document.createElement('div');
                 ship.setAttribute('id', 'ship');
                 ship.setAttribute('name', shipName);
+                ship.setAttribute('orientation', shipData.orientation);
+                ship.setAttribute('length', shipData.length);
         
                 // Set the ship position on gameboard grid (using area)
                 ship.style.gridRowStart = startY;
@@ -64,6 +71,9 @@ export class Player {
                 ship.style.gridColumnEnd = endX;
         
                 GB.appendChild(ship);
+
+                // allow dragging for each ship
+                dragObj.allowShipDragging(ship);
             }
 
             // Dispatch custom event after ships are randomized
@@ -71,7 +81,6 @@ export class Player {
         });
         document.querySelector(`.${this.#type}#player-container`).appendChild(RandomizeShips);
     }
-
 
     addPlayMenu() {
         // add a BLINDER (if there's none)
