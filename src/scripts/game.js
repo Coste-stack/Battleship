@@ -41,7 +41,7 @@ export class Game {
 
     startGame() {
         // add EventListeners to all '.tiles' to get player attacks
-        const tiles = document.querySelector('.Computer .gameboard').querySelectorAll('.tile');
+        const tiles = document.querySelector('.Computer #gameboard').querySelectorAll('[id=tile]');
 
         let attack;
         let attackEffect;
@@ -92,7 +92,7 @@ export class Game {
 
             const attackEffect = document.createElement('div');
             attackEffect.classList.add(attack);
-            const playerTiles = document.querySelector('.Player .gameboard').querySelectorAll('.tile');
+            const playerTiles = document.querySelector('.Player #gameboard').querySelectorAll('[id=tile]');
             playerTiles[x+y*this.#GBwidth].appendChild(attackEffect);
 
             if (attack === 'hit') {
@@ -152,16 +152,16 @@ export class Game {
 
     #createPlayButton() {
         const blinder = document.querySelector('.Computer .blinder');
-        if (blinder && document.querySelector('.play-button') === null) {
+        if (blinder && document.querySelector('#play-button') === null) {
             const playButton = document.createElement('button');
             playButton.textContent = 'Play';
-            playButton.classList.add('play-button');
-            const container = document.querySelector('.Computer .gameboard-wrapper')
+            playButton.setAttribute('id', 'play-button');
+            const container = document.querySelector('.Computer #gameboard-wrapper')
             container.appendChild(playButton);
 
             playButton.addEventListener('click', () => {
                 // hide 'randomize ships' button (hide and not remove - to keep space)
-                const randomizeButton = document.querySelector('.randomize-button');
+                const randomizeButton = document.querySelector('#randomize-button');
                 if (randomizeButton) randomizeButton.style.visibility = 'hidden';
                 // remove 'play' button
                 playButton.remove();

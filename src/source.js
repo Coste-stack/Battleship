@@ -7,7 +7,7 @@ import { Game } from './scripts/game.js';
 (function main() {
 
     try {
-        
+
         // initialize Ship objects
         const shipsInitial = {'Battleship': 4, 'Cruiser': 3, 'Submarine': 3, 'Destroyer': 2};
         const ships = [];

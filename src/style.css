@@ -16,7 +16,7 @@ body {
 
 /* PLAYER ITEMS */
 
-.player-container {
+#player-container {
     --gameboard-background-color: #bdbdbd;
     --tile-color: #707070;
     --tile-color-hit: #6d3333;
@@ -36,22 +36,22 @@ body {
     max-width: 35rem;
 }
 
-.player-display {
+#player-display {
     font-size: 2rem;
     color: var(--player-font-color);
 }
 
-.gameboard.blinder {
+#gameboard.blinder {
     filter: brightness(50%);
     pointer-events: none;
 }
 
-.play-button {
+#play-button {
     position: absolute;
     padding: 0.5rem 1rem;
 }
 
-.gameboard-wrapper {
+#gameboard-wrapper {
     /*center play-button as item of .gameboard-wrapper*/
     display: flex;
     align-items: center;
@@ -59,19 +59,19 @@ body {
 }
 
 @media screen and (max-height: 800px) {
-    .gameboard-wrapper {
+    #gameboard-wrapper {
         width: 13rem;
         height: auto;
     }
 }
 @media screen and (min-height: 800px) {
-    .gameboard-wrapper {
+    #gameboard-wrapper {
         width: 90%;
         height: auto;
     }
 }
 
-.gameboard {
+#gameboard {
     width: 100%; height: 100%;
     padding: 5px;
     background-color: var(--gameboard-background-color);
@@ -81,13 +81,13 @@ body {
     position: relative;
 }
 
-.gameboard-container button {
+#gameboard-container button {
     color: var(--button-font-color);
 }
 
 /* GAMEBOARD ITEMS */
 
-.tile {
+#tile {
     background-color: var(--tile-color);
     aspect-ratio: 1;
     grid-area: auto;
@@ -112,15 +112,15 @@ body {
     100%    { opacity: 1; transform: scale(1); };
 }
 
-.tile .miss {
+#tile .miss {
     background-color: var(--tile-color-miss);
 }
-.tile .hit {
+#tile .hit {
     background-color: var(--tile-color-hit);
 }
 
 
-.ship {
+#ship {
     width: 100%; height: 100%;
     position: absolute;
     background-color: var(--ship-color);

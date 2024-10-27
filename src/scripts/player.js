@@ -15,42 +15,18 @@ export class Player {
     get type() { return this.#type; }
     get gameboard() { return this.#gameboard; }
 
-    // Initialize the gameboard DOM creation
     initGameboard() {
-        // create PLAYER CONTAINER
-        const PlayerContainer = document.createElement('div');
-        PlayerContainer.classList.add('player-container', this.#type);
-        document.querySelector('#game-wrapper').appendChild(PlayerContainer);
+        const GB = document.querySelector(`.${this.#type} #gameboard`);
 
-        // create PLAYER INFO above gameboard grid
-        const PlayerDisplay = document.createElement('span');
-        PlayerDisplay.classList.add('player-display');
-        PlayerDisplay.textContent = this.#type;
-        PlayerContainer.appendChild(PlayerDisplay);
-
-        // create GAMEBOARD WRAPPER
-        const GBWrapper = document.createElement('div');
-        GBWrapper.classList.add('gameboard-wrapper', this.#type);
-
-        // create GRID FOR GAMEBOARD (GB)
-        const GB = document.createElement('div');
-        GB.classList.add('gameboard');
+        // change gameboard grid to specified width and height
         GB.style.gridTemplateColumns = `repeat(${this.#gameboard.width}, 1fr)`;
         GB.style.gridTemplateRows = `repeat(${this.#gameboard.height}, 1fr)`;
-        GBWrapper.appendChild(GB);
-        PlayerContainer.appendChild(GBWrapper);
 
-        // Add empty tiles to every position of gameboard grid
+        // add tiles to gameboard grid
         for (let y = 0; y < this.#gameboard.height; y++) {
             for (let x = 0; x < this.#gameboard.width; x++) {
                 const tile = document.createElement('div');
-                tile.classList.add('tile');
-    
-                // Set the tile position on gameboard grid (using area)
-                // tile.style.gridRowStart = x + 1;
-                // tile.style.gridColumnStart = y + 1;
-                // tile.style.gridRowEnd = x + 1;
-                // tile.style.gridColumnEnd = y + 1;
+                tile.setAttribute('id', 'tile');
                 GB.appendChild(tile);
             }
         }
@@ -58,17 +34,17 @@ export class Player {
 
 
     addRandomizeShipsButton() {
-        const GB = document.querySelector(`.${this.#type} .gameboard`);
+        const GB = document.querySelector(`.${this.#type} #gameboard`);
         // create RANDOMIZE SHIPS BUTTON
         const RandomizeShips = document.createElement('button');
         RandomizeShips.textContent = 'Randomize Ships';
-        RandomizeShips.classList.add('randomize-button');
+        RandomizeShips.setAttribute('id', 'randomize-button');
 
         RandomizeShips.addEventListener('click', () => {
             this.randomlySetShips();
 
             // REMOVE ALL SHIPS from previous board
-            let shipsToDelete = GB.querySelectorAll('.ship');
+            let shipsToDelete = GB.querySelectorAll('[id=ship]');
             shipsToDelete.forEach(ship => {
                 GB.removeChild(ship);
             });
@@ -78,7 +54,8 @@ export class Player {
                 const { startX, endX, startY, endY } = shipData;
         
                 const ship = document.createElement('div');
-                ship.classList.add('ship', shipName);
+                ship.setAttribute('id', 'ship');
+                ship.setAttribute('name', shipName);
         
                 // Set the ship position on gameboard grid (using area)
                 ship.style.gridRowStart = startY;
@@ -92,13 +69,13 @@ export class Player {
             // Dispatch custom event after ships are randomized
             document.dispatchEvent(new CustomEvent('shipsRandomized', { detail: { type: this.#type } }));
         });
-        document.querySelector(`.${this.#type}.player-container`).appendChild(RandomizeShips);
+        document.querySelector(`.${this.#type}#player-container`).appendChild(RandomizeShips);
     }
 
 
     addPlayMenu() {
         // add a BLINDER (if there's none)
-        const computerGB = document.querySelector('.Computer .gameboard')
+        const computerGB = document.querySelector('.Computer #gameboard')
         if (computerGB && !computerGB.classList.contains('blinder')) {
             computerGB.classList.add('blinder');
         }
