@@ -9,7 +9,7 @@ import { Game } from './scripts/game.js';
     try {
 
         // initialize Ship objects
-        const shipsInitial = {'Battleship': 4, 'Cruiser': 3, 'Submarine': 3, 'Destroyer': 2};
+        const shipsInitial = {'Battleship': 1, 'Cruiser': 1, 'Submarine': 1, 'Destroyer': 2};
         const ships = [];
         Object.entries(shipsInitial).forEach(([ship, length]) => {
             const shipObj = new Ship(ship, length); 
