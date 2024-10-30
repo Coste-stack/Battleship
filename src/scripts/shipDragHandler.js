@@ -17,7 +17,7 @@ export class ShipDragHandler {
         ship.addEventListener('dragend', () => this.#dragEnd());
         // Mobile support
         ship.addEventListener('touchstart', (e) => this.#touchStart(e, ship));
-        ship.addEventListener('touchend', (e) => this.#touchEnd());
+        ship.addEventListener('touchend', () => this.#touchEnd());
     }
 
     #dragStart(e, ship) {
@@ -67,7 +67,7 @@ export class ShipDragHandler {
         }
     }
 
-    #touchEnd(e) {
+    #touchEnd() {
         const dropPosition = this.#getDropPositionTouch();
         if (this.#isValidDrop(this.currentShip, dropPosition)) {
             this.#placeShip(dropPosition);
@@ -85,8 +85,11 @@ export class ShipDragHandler {
         const cellWidth = gameboardRect.width / this.gameboardObj.width;
         const cellHeight = gameboardRect.height / this.gameboardObj.height;
 
-        const xPos = Math.floor(parseFloat(this.currentShip.style.top) / cellHeight);
-        const yPos = Math.floor(parseFloat(this.currentShip.style.left) / cellWidth);
+        // calculate current ship position
+        // currentShip.style.top/left to take left upper corner of ship
+        // add cellWidth/Height to take the center of left ship corner
+        const xPos = Math.floor((parseFloat(this.currentShip.style.top) + cellHeight/2) / cellHeight);
+        const yPos = Math.floor((parseFloat(this.currentShip.style.left) + cellWidth/2) / cellWidth);
         console.log(xPos, yPos);
 
         return { x: xPos, y: yPos };
