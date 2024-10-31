@@ -61,8 +61,6 @@ export class Player {
                 const ship = document.createElement('div');
                 ship.setAttribute('id', 'ship');
                 ship.setAttribute('name', shipName);
-                ship.setAttribute('orientation', shipData.orientation);
-                ship.setAttribute('length', shipData.length);
         
                 // Set the ship position on gameboard grid (using area)
                 ship.style.gridRowStart = startY;

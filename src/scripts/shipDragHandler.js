@@ -68,16 +68,15 @@ export class ShipDragHandler {
     #touchEnd() {
         const dropPosition = this.#getDropPositionTouch();
         if (this.#isValidDrop(this.currentShip, dropPosition)) {
-            this.#placeShip(dropPosition);
 
-            /* Adress the ship position changes */
-            // Get 'ship' object from previous position
-            
             const prevX = this.startShip.style.gridColumnStart - 1;
             const prevY = this.startShip.style.gridRowStart - 1;
-            const shipObj = this.gameboardObj.board[prevY][prevX].ship;
+            const shipObj = this.gameboardObj.board[prevY][prevX].ship; // Get 'ship' object from previous position
             const prevOrientation = shipObj.orientation;
 
+            this.#placeShip(dropPosition, shipObj);
+
+            /* Adress the ship position changes */
             const newX = dropPosition.x;
             const newY = dropPosition.y;
             const newOrientation = shipObj.orientation;
@@ -147,9 +146,9 @@ export class ShipDragHandler {
     }
 
     // Logic to visually place the ship on the gameboard
-    #placeShip(dropPosition) {
-        const shipSize = parseInt(this.currentShip.getAttribute('length'));
-        const shipOrientation = this.currentShip.getAttribute('orientation');
+    #placeShip(dropPosition, shipObj) {
+        const shipSize = shipObj.length;
+        const shipOrientation = shipObj.orientation;
 
         // remove previous 'width', 'height' to allow grid snapping
         this.currentShip.style.width = '';
