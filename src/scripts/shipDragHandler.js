@@ -62,9 +62,6 @@ export class ShipDragHandler {
             const touch = e.targetTouches[0];
             this.currentShip.style.left = `${touch.clientX - gameboardRect.left - this.offset.x}px`;
             this.currentShip.style.top = `${touch.clientY - gameboardRect.top - this.offset.y}px`;
-
-            console.log(`Current Ship Position - Left: ${this.currentShip.style.left}, Top: ${this.currentShip.style.top}`);
-            console.log(`GameboardRect - Left: ${gameboardRect.left}, Top: ${gameboardRect.top}`);
         }
     }
 
@@ -75,20 +72,20 @@ export class ShipDragHandler {
 
             /* Adress the ship position changes */
             // Get 'ship' object from previous position
-            console.log(this.startShip);
+            
             const prevX = this.startShip.style.gridColumnStart - 1;
             const prevY = this.startShip.style.gridRowStart - 1;
-            const shipObj = this.gameboardObj.board;
-            console.log(prevY, prevX);
-            console.log(shipObj[prevY][prevX]);
-            
+            const shipObj = this.gameboardObj.board[prevY][prevX].ship;
+            const prevOrientation = shipObj.orientation;
+
+            const newX = dropPosition.x;
+            const newY = dropPosition.y;
+            const newOrientation = shipObj.orientation;
             
             // Refresh gameboard.board
-            //this.gameboardObj.removeShip(x, y, shipData);
-            //this.gameboardObj.placeShip(x, y, shipData);
-
-            // Debug
-            // this.gameboardObj.printBoard();
+            this.gameboardObj.removeShip(prevX, prevY, shipObj, prevOrientation);
+            this.gameboardObj.placeShip(newY, newX, shipObj, newOrientation);
+            this.gameboardObj.printBoard(); // Debug
         } else {
             console.log('Invalid drop position'); // Handle invalid drop
         }
@@ -123,7 +120,7 @@ export class ShipDragHandler {
     #drop(e) {
         e.preventDefault(); // Prevent default behavior
 
-        const dropPosition = this.#getDropPosition(e);
+        const dropPosition = this.#getDropPosition();
         if (this.#isValidDrop(this.currentShip, dropPosition)) {
             this.#placeShip(dropPosition);
         } else {
@@ -131,13 +128,13 @@ export class ShipDragHandler {
         }
     }
 
-    #getDropPosition(e) {
+    #getDropPosition() {
         const gameboardRect = this.gameboardElement.getBoundingClientRect();
         const cellWidth = gameboardRect.width / this.gameboardObj.width;
         const cellHeight = gameboardRect.height / this.gameboardObj.height;
 
-        const xPos = Math.floor((e.clientY - gameboardRect.top) / cellHeight);
-        const yPos = Math.floor((e.clientX - gameboardRect.left) / cellWidth);
+        const xPos = Math.floor((e.clientX - gameboardRect.left) / cellWidth);
+        const yPos = Math.floor((e.clientY - gameboardRect.top) / cellHeight);
 
         return { x: xPos, y: yPos };
     }
@@ -159,7 +156,7 @@ export class ShipDragHandler {
         this.currentShip.style.height = '';
         this.currentShip.style.left = '';
         this.currentShip.style.top = '';
-
+        
         switch(shipOrientation) {
             case 'x':
                 this.currentShip.style.gridRowStart = dropPosition.x + 1;
