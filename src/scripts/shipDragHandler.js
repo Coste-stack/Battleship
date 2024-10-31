@@ -2,6 +2,7 @@ export class ShipDragHandler {
     constructor(gameboard) {
         this.gameboardObj = gameboard;
         this.gameboardElement = document.querySelector('.Player #gameboard');
+        this.startShip = null; // To keep track of the ship's starting data
         this.currentShip = null; // To keep track of the ship being dragged
         this.offset = { x: 0, y: 0 }; // To store the drag offset
 
@@ -25,6 +26,7 @@ export class ShipDragHandler {
     #dragStart(e, ship) {
         this.startShip = ship.cloneNode(false); // store the ship's starting position
         this.currentShip = ship;
+
         e.dataTransfer.setData('text/plain', ship.id);
     }
 
@@ -128,7 +130,6 @@ export class ShipDragHandler {
 
     #placeShip(dropPosition) {
         if (this.#isValidDrop(this.currentShip, dropPosition)) {
-
             const prevX = this.startShip.style.gridColumnStart - 1;
             const prevY = this.startShip.style.gridRowStart - 1;
             const shipObj = this.gameboardObj.board[prevY][prevX].ship; // Get 'ship' object from previous position

@@ -7,7 +7,7 @@ export class Player {
     
     constructor(gameboard, ships, type) {
         if (type !== 'Player' && type !== 'Computer') {
-            throw new Error('Type for Player is invalid! (put "player" or "computer")');
+            throw new Error('Type for Player is invalid! (put "Player" or "Computer")');
         }
         this.#type = type;
         this.#ships = ships;
@@ -42,6 +42,9 @@ export class Player {
         RandomizeShips.textContent = 'Randomize Ships';
         RandomizeShips.setAttribute('id', 'randomize-button');
 
+        // allow drag/drop for gameboard
+        const dragObj = new ShipDragHandler(this.#gameboard);
+
         RandomizeShips.addEventListener('click', () => {
             this.randomlySetShips();
 
@@ -50,9 +53,6 @@ export class Player {
             shipsToDelete.forEach(ship => {
                 GB.removeChild(ship);
             });
-
-            // allow dragging for gameboard
-            const dragObj = new ShipDragHandler(this.#gameboard);
 
             // ADD SHIPS to the gameboard
             for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
