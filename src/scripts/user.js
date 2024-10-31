@@ -3,6 +3,7 @@
 export class User {
     #gameboard;
     #ships;
+    static #playerTurn;
 
     constructor(gameboard, ships) {
         if(this.constructor == User) {
@@ -13,6 +14,14 @@ export class User {
     }
 
     get gameboard() { return this.#gameboard; }
+
+    static getPlayerTurn() {
+        return User.#playerTurn;
+    }
+
+    static setPlayerTurn(turn) {
+        User.#playerTurn = turn;
+    }
 
     initGameboard() {
         const GB = document.querySelector(`.${this.constructor.name} #gameboard`);

@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "./user.js";
 
 export class Computer extends User {
     #gameboard;
@@ -43,21 +43,18 @@ export class Computer extends User {
         }
 
         // attack
-        try {
-            const attack = playerObj.gameboard.receiveAttack(x, y);
+        const attack = playerObj.gameboard.receiveAttack(x, y);
 
-            const attackEffect = document.createElement('div');
-            attackEffect.classList.add(attack);
-            const playerTiles = document.querySelector('.Player #gameboard').querySelectorAll('[id=tile]');
-            playerTiles[x+y*this.#gameboard.width].appendChild(attackEffect);
+        const attackEffect = document.createElement('div');
+        attackEffect.classList.add(attack);
+        const playerTiles = document.querySelector('.Player #gameboard').querySelectorAll('[id=tile]');
+        playerTiles[x+y*this.#gameboard.width].appendChild(attackEffect);
 
-            if (attack === 'hit') {
-                // change last successful hit
-                this.#lastComputerHitStack.push({x, y});
-            }
-        } catch (err) {
-            console.error(err);
+        if (attack === 'hit') {
+            // change last successful hit
+            this.#lastComputerHitStack.push({x, y});
         }
+        Computer.setPlayerTurn(true);
     }
 
     #chooseComputerAttack() {

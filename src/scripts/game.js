@@ -1,3 +1,4 @@
+import { User } from './user.js';
 import { Player } from './player.js';
 import { Computer } from './computer.js';
 import { Gameboard } from './gameboard.js';
@@ -5,8 +6,6 @@ import { Gameboard } from './gameboard.js';
 export class Game {
     #player; #computer;
     #GBwidth; #GBheight;
-    #playerTurn;
-    #computerAttacks; #lastComputerHitStack;
     
     constructor(ships) {
         // Initialize Gameboards
@@ -39,7 +38,7 @@ export class Game {
             }
         });
 
-
+        // Start the game attack turns - when 'gamePrepared' is up
         document.addEventListener('gamePrepared', () => this.startGame());
     }
 
@@ -49,12 +48,17 @@ export class Game {
 
         let attack;
         let attackEffect;
+        // set starting turn to player
+        Player.setPlayerTurn(true);
 
         tiles.forEach((tile, index) => {
             tile.addEventListener('click', () => {
-                this.#playerTurn = true;
+
                 // PLAYER ATTACK TURN
                 try {
+                    if (!Player.getPlayerTurn()) {
+                        throw new Error('Not Player\'s turn');
+                    }
                     let x = index % this.#GBwidth;
                     let y = Math.floor(index / this.#GBheight);
                     attack = this.#computer.gameboard.receiveAttack(x, y);
@@ -62,14 +66,21 @@ export class Game {
                     attackEffect = document.createElement('div');
                     attackEffect.classList.add(attack);
                     tile.appendChild(attackEffect);
-                    this.#playerTurn = false;
+
+                    // change turn
+                    Player.setPlayerTurn(false);
+                    //this.#computer.setPlayerTurn(true);
                 } catch (err) {
                     console.error(err);
                 }
-                
+
                 // COMPUTER ATTACK TURN
-                if (!this.#playerTurn) {
-                    this.#computer.computerAttack(this.#player);
+                try {
+                    if (!Player.getPlayerTurn()) {
+                        this.#computer.computerAttack(this.#player);
+                    }
+                } catch (err) {
+                    console.error(err);
                 }
             });
         });

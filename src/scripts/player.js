@@ -1,5 +1,5 @@
 import { ShipDragHandler } from "./shipDragHandler";
-import { User } from "./user";
+import { User } from "./user.js";
 
 export class Player extends User {
     #gameboard;
