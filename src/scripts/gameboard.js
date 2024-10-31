@@ -79,7 +79,7 @@ export class Gameboard {
         return true;
     }
 
-    placeShip(x, y, ship, orientation = 'x') {
+    placeShip(x, y, ship, orientation) {
         // check if ship fits the board (based on orientation)
         switch (orientation) {
         case 'x':
@@ -91,13 +91,14 @@ export class Gameboard {
                 for(let i = x; i < x+ship.length; i++) {
                     this.#board[y][i] = {ship: ship, isHit: false};
                 }
+                ship.orientation = orientation;
                 // add ship coordinates to a list that tracks all of them
                 this.#shipsOnBoard[ship.name] = { 
                     startX: x + 1,
                     endX: x + ship.length + 1,
                     startY: y + 1,
                     endY: y + 1,
-                    orientation: orientation,
+                    orientation: orientation, // TO CHANGE(?) - PASS SHIP OBJECT, maybe remove entire shipsOnBoard
                     length: ship.length
                 };
             } else {
@@ -113,6 +114,7 @@ export class Gameboard {
                 for(let i = y; i < y+ship.length; i++) {
                     this.#board[i][x] = {ship: ship, isHit: false};
                 }
+                ship.orientation = orientation;
                 // add ship coordinates to a list that tracks all of them
                 this.#shipsOnBoard[ship.name] = { 
                     startX: x + 1,

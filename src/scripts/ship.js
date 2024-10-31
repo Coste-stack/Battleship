@@ -18,6 +18,8 @@ export class Ship {
     get length() { return this.#length; }
     get hits() { return this.#hits; }
     get orientation() { return this.#orientation; }
+    // when changing ship's position, allow to change it's orientation
+    set orientation(newOrientation) { this.#orientation = newOrientation; }
 
     hit() {
         this.#hits++; 
