@@ -44,28 +44,7 @@ export class ShipDragHandler {
         e.preventDefault(); // Prevent default behavior
 
         const dropPosition = this.#getDropPosition(e);
-        if (this.#isValidDrop(this.currentShip, dropPosition)) {
-            // Get 'ship' object from previous position
-            const prevX = this.startShip.style.gridColumnStart - 1;
-            const prevY = this.startShip.style.gridRowStart - 1;
-            const shipObj = this.gameboardObj.board[prevY][prevX].ship;
-            const prevOrientation = shipObj.orientation;
-
-            this.#placeShip(dropPosition, shipObj);
-
-            /* Adress the ship position changes */
-            const newX = dropPosition.x;
-            const newY = dropPosition.y;
-            const newOrientation = shipObj.orientation;
-            
-            // Refresh gameboard.board
-            this.gameboardObj.removeShip(prevX, prevY, shipObj, prevOrientation);
-            this.gameboardObj.placeShip(newX, newY, shipObj, newOrientation);
-            this.gameboardObj.printBoard(); // Debug
-            
-        } else {
-            console.log('Invalid drop position'); // Handle invalid drop
-        }
+        this.#placeShip(dropPosition);
     }
 
     /* MOBILE SUPPORT */
@@ -108,27 +87,7 @@ export class ShipDragHandler {
 
     #touchEnd() {
         const dropPosition = this.#getDropPositionTouch();
-        if (this.#isValidDrop(this.currentShip, dropPosition)) {
-
-            const prevX = this.startShip.style.gridColumnStart - 1;
-            const prevY = this.startShip.style.gridRowStart - 1;
-            const shipObj = this.gameboardObj.board[prevY][prevX].ship; // Get 'ship' object from previous position
-            const prevOrientation = shipObj.orientation;
-
-            this.#placeShip(dropPosition, shipObj);
-
-            /* Adress the ship position changes */
-            const newX = dropPosition.x;
-            const newY = dropPosition.y;
-            const newOrientation = shipObj.orientation;
-            
-            // Refresh gameboard.board
-            this.gameboardObj.removeShip(prevX, prevY, shipObj, prevOrientation);
-            this.gameboardObj.placeShip(newX, newY, shipObj, newOrientation);
-            this.gameboardObj.printBoard(); // Debug
-        } else {
-            console.log('Invalid drop position'); // Handle invalid drop
-        }
+        this.#placeShip(dropPosition);
 
         this.gameboardElement.removeEventListener('touchmove', (e) => this.#touchDrag(e));
         // Reset offset (so that next click has new offset)
@@ -167,8 +126,32 @@ export class ShipDragHandler {
         return { x: xPos, y: yPos };
     }
 
+    #placeShip(dropPosition) {
+        if (this.#isValidDrop(this.currentShip, dropPosition)) {
+
+            const prevX = this.startShip.style.gridColumnStart - 1;
+            const prevY = this.startShip.style.gridRowStart - 1;
+            const shipObj = this.gameboardObj.board[prevY][prevX].ship; // Get 'ship' object from previous position
+            const prevOrientation = shipObj.orientation;
+
+            this.#placeShipVisually(dropPosition, shipObj);
+
+            /* Adress the ship position changes */
+            const newX = dropPosition.x;
+            const newY = dropPosition.y;
+            const newOrientation = shipObj.orientation;
+            
+            // Refresh gameboard.board
+            this.gameboardObj.removeShip(prevX, prevY, shipObj, prevOrientation);
+            this.gameboardObj.placeShip(newX, newY, shipObj, newOrientation);
+            this.gameboardObj.printBoard(); // Debug
+        } else {
+            console.log('Invalid drop position'); // Handle invalid drop
+        }
+    }
+
     // Logic to visually place the ship on the gameboard
-    #placeShip(dropPosition, shipObj) {
+    #placeShipVisually(dropPosition, shipObj) {
         const shipSize = shipObj.length;
         const shipOrientation = shipObj.orientation;
 
@@ -177,7 +160,6 @@ export class ShipDragHandler {
         this.currentShip.style.height = '';
         this.currentShip.style.left = '';
         this.currentShip.style.top = '';
-        console.log(dropPosition);
         
         switch(shipOrientation) {
             case 'x':
