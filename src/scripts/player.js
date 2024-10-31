@@ -57,6 +57,7 @@ export class Player {
             // ADD SHIPS to the gameboard
             for (const [shipName, shipData] of Object.entries(this.#gameboard.shipsOnBoard)) {
                 const { startX, endX, startY, endY } = shipData;
+                console.log(shipData);
         
                 const ship = document.createElement('div');
                 ship.setAttribute('id', 'ship');

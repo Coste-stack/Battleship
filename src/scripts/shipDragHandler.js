@@ -6,15 +6,15 @@ export class ShipDragHandler {
         this.offset = { x: 0, y: 0 }; // To store the drag offset
 
         // Desktop support
-        this.gameboardElement.addEventListener('dragover', (e) => this.#dragOver(e));
-        this.gameboardElement.addEventListener('drop', (e) => this.#drop(e));
+        //this.gameboardElement.addEventListener('dragover', (e) => this.#dragOver(e));
+        //this.gameboardElement.addEventListener('drop', (e) => this.#drop(e));
     }
 
     allowShipDragging(ship) {
         ship.setAttribute('draggable', 'true');
         // Desktop support
-        ship.addEventListener('dragstart', (e) => this.#dragStart(e, ship));
-        ship.addEventListener('dragend', () => this.#dragEnd());
+        //ship.addEventListener('dragstart', (e) => this.#dragStart(e, ship));
+        //ship.addEventListener('dragend', () => this.#dragEnd());
         // Mobile support
         ship.addEventListener('touchstart', (e) => this.#touchStart(e, ship));
         ship.addEventListener('touchend', () => this.#touchEnd());
@@ -31,7 +31,8 @@ export class ShipDragHandler {
 
     #touchStart(e, ship) {
         e.preventDefault();
-        this.currentShip = ship;
+        this.startShip = ship.cloneNode(false); // store the ship's starting position
+        this.currentShip = ship; // pass by reference to currentShip
         
         // Calculate the offset of the mouse pointer relative to the ship's top-left corner
         const touch = e.targetTouches[0];
@@ -71,13 +72,33 @@ export class ShipDragHandler {
         const dropPosition = this.#getDropPositionTouch();
         if (this.#isValidDrop(this.currentShip, dropPosition)) {
             this.#placeShip(dropPosition);
+
+            /* Adress the ship position changes */
+            // Get 'ship' object from previous position
+            console.log(this.startShip);
+            const prevX = this.startShip.style.gridColumnStart - 1;
+            const prevY = this.startShip.style.gridRowStart - 1;
+            const shipObj = this.gameboardObj.board;
+            console.log(prevY, prevX);
+            console.log(shipObj[prevY][prevX]);
+            
+            
+            // Refresh gameboard.board
+            //this.gameboardObj.removeShip(x, y, shipData);
+            //this.gameboardObj.placeShip(x, y, shipData);
+
+            // Debug
+            // this.gameboardObj.printBoard();
         } else {
             console.log('Invalid drop position'); // Handle invalid drop
         }
 
         this.gameboardElement.removeEventListener('touchmove', (e) => this.#touchDrag(e));
-        this.currentShip = null; // Clear the current ship reference
-        this.offset = { x: 0, y: 0 }; // Reset offset (so that next click has new offset)
+        // Reset offset (so that next click has new offset)
+        this.offset = { x: 0, y: 0 };
+        // Clear the ship references
+        this.startShip = null;
+        this.currentShip = null;
     }
 
     #getDropPositionTouch() {
