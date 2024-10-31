@@ -48,9 +48,21 @@ export class ShipDragHandler {
             // Get 'ship' object from previous position
             const prevX = this.startShip.style.gridColumnStart - 1;
             const prevY = this.startShip.style.gridRowStart - 1;
-
             const shipObj = this.gameboardObj.board[prevY][prevX].ship;
+            const prevOrientation = shipObj.orientation;
+
             this.#placeShip(dropPosition, shipObj);
+
+            /* Adress the ship position changes */
+            const newX = dropPosition.x;
+            const newY = dropPosition.y;
+            const newOrientation = shipObj.orientation;
+            
+            // Refresh gameboard.board
+            this.gameboardObj.removeShip(prevX, prevY, shipObj, prevOrientation);
+            this.gameboardObj.placeShip(newX, newY, shipObj, newOrientation);
+            this.gameboardObj.printBoard(); // Debug
+            
         } else {
             console.log('Invalid drop position'); // Handle invalid drop
         }
@@ -112,7 +124,7 @@ export class ShipDragHandler {
             
             // Refresh gameboard.board
             this.gameboardObj.removeShip(prevX, prevY, shipObj, prevOrientation);
-            this.gameboardObj.placeShip(newY, newX, shipObj, newOrientation);
+            this.gameboardObj.placeShip(newX, newY, shipObj, newOrientation);
             this.gameboardObj.printBoard(); // Debug
         } else {
             console.log('Invalid drop position'); // Handle invalid drop
