@@ -3,12 +3,10 @@ import { User } from "./user.js";
 
 export class Player extends User {
     #gameboard;
-    #ships;
     
     constructor(gameboard, ships) {
         super(gameboard, ships);
         this.#gameboard = gameboard;
-        this.#ships = ships;
     }
 
     addRandomizeShipsButton() {
@@ -48,6 +46,8 @@ export class Player extends User {
 
                 // allow dragging for each ship
                 dragObj.allowShipDragging(ship);
+                // when game is started - remove dragging for each ship
+                document.addEventListener('gamePrepared', () => dragObj.removeShipDragging(ship));
             }
 
             // Dispatch custom event after ships are randomized

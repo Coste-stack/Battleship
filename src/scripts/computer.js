@@ -2,14 +2,12 @@ import { User } from "./user.js";
 
 export class Computer extends User {
     #gameboard;
-    #ships;
     #lastComputerHitStack;
     #computerAttacks;
 
     constructor(gameboard, ships) {
         super(gameboard, ships);
         this.#gameboard = gameboard;
-        this.#ships = ships;
 
         this.#lastComputerHitStack = [];
         this.#computerAttacks = [];

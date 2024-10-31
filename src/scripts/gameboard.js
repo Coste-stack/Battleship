@@ -98,7 +98,7 @@ export class Gameboard {
                     endX: x + ship.length + 1,
                     startY: y + 1,
                     endY: y + 1,
-                    orientation: orientation, // TO CHANGE(?) - PASS SHIP OBJECT, maybe remove entire shipsOnBoard
+                    orientation: orientation,
                     length: ship.length
                 };
             } else {

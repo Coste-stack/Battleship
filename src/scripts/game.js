@@ -1,4 +1,3 @@
-import { User } from './user.js';
 import { Player } from './player.js';
 import { Computer } from './computer.js';
 import { Gameboard } from './gameboard.js';

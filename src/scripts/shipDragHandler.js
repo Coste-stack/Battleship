@@ -1,4 +1,6 @@
 export class ShipDragHandler {
+    #eventListeners = [];
+
     constructor(gameboard) {
         this.gameboardObj = gameboard;
         this.gameboardElement = document.querySelector('.Player #gameboard');
@@ -7,23 +9,51 @@ export class ShipDragHandler {
         this.offset = { x: 0, y: 0 }; // To store the drag offset
 
         // Desktop support
-        this.gameboardElement.addEventListener('dragover', (e) => this.#dragOver(e));
-        this.gameboardElement.addEventListener('drop', (e) => this.#drop(e));
+        this.addEventListener(this.gameboardElement, 'dragover', (e) => this.#dragOver(e));
+        this.addEventListener(this.gameboardElement, 'drop', (e) => this.#drop(e));
+    }
+
+    // override addEventListener
+    addEventListener(element, type, handler) {
+        element.addEventListener(type, handler);
+        this.#eventListeners.push({ element, type, handler }); // store this eventListener
     }
 
     allowShipDragging(ship) {
         ship.setAttribute('draggable', 'true');
         // Desktop support
-        ship.addEventListener('dragstart', (e) => this.#dragStart(e, ship));
-        ship.addEventListener('dragend', () => this.#dragEnd());
+        this.addEventListener(ship, 'dragstart', (e) => this.#dragStart(e, ship));
+        this.addEventListener(ship, 'dragend', () => this.#dragEnd());
         // Mobile support
-        ship.addEventListener('touchstart', (e) => this.#touchStart(e, ship));
-        ship.addEventListener('touchend', () => this.#touchEnd());
+        this.addEventListener(ship, 'touchstart', (e) => this.#touchStart(e, ship));
+        this.addEventListener(ship, 'touchend', () => this.#touchEnd());
+        
+    }
+
+    removeShipDragging(ship) {
+        ship.setAttribute('draggable', 'false');
+
+        // Remove all event listeners associated with the ship and gameboard
+        this.#eventListeners = this.#eventListeners.filter(listener => {
+            const isShipListener = listener.element === ship;
+            const isGameboardListener = listener.element === this.gameboardElement;
+
+            if (isShipListener || isGameboardListener) {
+                // Remove the listener
+                listener.element.removeEventListener(listener.type, listener.handler);
+                return false; // Remove this listener from the array
+            }
+            return true; // Keep this listener
+        });
+        console.log(this.#eventListeners);
+        
     }
 
     /* DESKTOP SUPPORT */
 
     #dragStart(e, ship) {
+        console.log(1);
+        
         this.startShip = ship.cloneNode(false); // store the ship's starting position
         this.currentShip = ship;
 
@@ -31,6 +61,7 @@ export class ShipDragHandler {
     }
 
     #dragEnd() {
+        console.log(2);
         // Reset offset (so that next click has new offset)
         this.offset = { x: 0, y: 0 };
         // Clear the ship references
@@ -39,10 +70,12 @@ export class ShipDragHandler {
     }
 
     #dragOver(e) {
+        console.log(3);
         e.preventDefault(); // Prevent default to allow dropping
     }
 
     #drop(e) {
+        console.log(4);
         e.preventDefault(); // Prevent default behavior
 
         const dropPosition = this.#getDropPosition(e);
