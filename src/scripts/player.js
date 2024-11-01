@@ -17,8 +17,37 @@ export class Player extends User {
         // add hit effect
         const attackEffect = document.createElement('div');
         attackEffect.classList.add(attack);
-        const playerTiles = document.querySelector('.Computer #gameboard').querySelectorAll('[id=tile]');
+        const computerGbHTML = document.querySelector('.Computer #gameboard');
+        
+        const playerTiles = computerGbHTML.querySelectorAll('[id=tile]');
         playerTiles[x+y*this.#gameboard.width].appendChild(attackEffect);
+
+        const computerGbObj = computerObj.gameboard
+        if (attack === 'hit') {
+            if (computerGbObj.board[y][x].ship.isSunk()) {
+                const shipName = computerGbObj.board[y][x].ship.name;
+                // display it
+                console.log('sunk', shipName);
+                
+                // make the ship appear
+                console.log(computerGbObj.shipsOnBoard);
+                
+                const shipData = computerGbObj.shipsOnBoard[shipName];
+                const { startX, endX, startY, endY } = shipData;
+    
+                const ship = document.createElement('div');
+                ship.setAttribute('id', 'ship');
+                ship.setAttribute('name', shipName);
+        
+                // Set the ship position on gameboard grid (using area)
+                ship.style.gridRowStart = startY;
+                ship.style.gridColumnStart = startX;
+                ship.style.gridRowEnd = endY;
+                ship.style.gridColumnEnd = endX;
+        
+                computerGbHTML.appendChild(ship);
+            }
+        }
 
         // change turn
         Player.setPlayerTurn(false);
