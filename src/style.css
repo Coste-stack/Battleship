@@ -1,3 +1,14 @@
+:root {
+    --gameboard-background-color: #bdbdbd;
+    --tile-color: #707070;
+    --tile-color-hit: #6d3333;
+    --tile-color-miss: #2b2727;
+    --ship-color: #2e6b57;
+    --player-font-color: #9ec6e7;
+    --button-font-color: #000000;
+    --highlight-color: #FFD700;
+}
+
 body {
     height: 100vh; width: 100vw;
     background-color: #2e6b57;
@@ -17,15 +28,6 @@ body {
 /* PLAYER ITEMS */
 
 #player-container {
-    --gameboard-background-color: #bdbdbd;
-    --tile-color: #707070;
-    --tile-color-hit: #6d3333;
-    --tile-color-miss: #2b2727;
-    --ship-color: #2e6b57;
-    --player-font-color: #9ec6e7;
-    --button-font-color: #000000;
-    --highlight-color: #FFD700;
-
     display: flex;
     flex-direction: column;
     align-items: center;

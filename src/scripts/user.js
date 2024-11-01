@@ -4,6 +4,7 @@ export class User {
     #gameboard;
     #ships;
     static #playerTurn;
+    #ripple;
 
     constructor(gameboard, ships) {
         if(this.constructor == User) {
@@ -11,6 +12,9 @@ export class User {
          };
         this.#gameboard = gameboard;
         this.#ships = ships;
+
+        // generate ripple effect to apply to sunken ships
+        this.#ripple = this.#getRippleSpan();
     }
 
     get gameboard() { return this.#gameboard; }
@@ -44,14 +48,22 @@ export class User {
         throw new Error("Attack method needs to be defined");
     }
     
-    addRippleEffect(ship) {
+    #getRippleSpan() {
         // Create the ripple element inside the container
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
-        ship.appendChild(ripple);
 
+        // Create simulated ship
+        const ship = document.createElement('div');
+        ship.setAttribute('id', 'ship');
+        ship.style.width = ship.style.height = '1px';
+        console.log(ship);
+        
         // Get ship grayscale background color
+        document.body.appendChild(ship);
         const rgbMatch = window.getComputedStyle(ship).backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/);
+        ship.remove();
+
         if (rgbMatch) {
             // Parse the RGB values
             const r = parseInt(rgbMatch[1], 10);
@@ -62,19 +74,26 @@ export class User {
             const gray = Math.round((r + g + b) / 3);
             // Create a grayscale color string with adjusted opacity for the ripple
             const grayscaleColor = `rgba(${gray}, ${gray}, ${gray}, 1)`;
-
-            // Set the size of the ripple to cover the rippleEffect container
-            const maxDimension = Math.max(ship.offsetWidth, ship.offsetHeight);
-            ripple.style.width = ripple.style.height = maxDimension + 'px';
             ripple.style.backgroundColor = grayscaleColor;
-
-            // Center the ripple in the container
-            ripple.style.left = `${(ship.offsetWidth - maxDimension) / 2}px`;
-            ripple.style.top = `${(ship.offsetHeight - maxDimension) / 2}px`;
-
-            // Trigger the ripple animation
-            setTimeout(() => ripple.classList.add('animate'), 0);
         }
+
+        return ripple;
+    }
+
+    addRippleEffect(ship) {
+        const ripple = this.#ripple.cloneNode(false);
+        ship.appendChild(ripple);
+
+        // Set the size of the ripple to cover the rippleEffect container
+        const maxDimension = Math.max(ship.offsetWidth, ship.offsetHeight);
+        ripple.style.width = ripple.style.height = maxDimension + 'px';
+
+        // Center the ripple in the container
+        ripple.style.left = `${(ship.offsetWidth - maxDimension) / 2}px`;
+        ripple.style.top = `${(ship.offsetHeight - maxDimension) / 2}px`;
+        
+        // Trigger the ripple animation
+        setTimeout(() => ripple.classList.add('animate'), 0);
     }
 
     randomlySetShips() {
