@@ -57,7 +57,6 @@ export class User {
         const ship = document.createElement('div');
         ship.setAttribute('id', 'ship');
         ship.style.width = ship.style.height = '1px';
-        console.log(ship);
         
         // Get ship grayscale background color
         document.body.appendChild(ship);
