@@ -45,12 +45,10 @@ export class Game {
         // add EventListeners to all '.tiles' to get player attacks
         const tiles = document.querySelector('.Computer #gameboard').querySelectorAll('[id=tile]');
 
-        let attack;
-        let attackEffect;
         // set starting turn to player
         Player.setPlayerTurn(true);
 
-        tiles.forEach((tile, index) => {
+        tiles.forEach((tile, tileIndex) => {
             tile.addEventListener('click', () => {
 
                 // PLAYER ATTACK TURN
@@ -58,17 +56,7 @@ export class Game {
                     if (!Player.getPlayerTurn()) {
                         throw new Error('Not Player\'s turn');
                     }
-                    let x = index % this.#GBwidth;
-                    let y = Math.floor(index / this.#GBheight);
-                    attack = this.#computer.gameboard.receiveAttack(x, y);
-
-                    attackEffect = document.createElement('div');
-                    attackEffect.classList.add(attack);
-                    tile.appendChild(attackEffect);
-
-                    // change turn
-                    Player.setPlayerTurn(false);
-                    //this.#computer.setPlayerTurn(true);
+                    this.#player.attack(this.#computer, tileIndex);
                 } catch (err) {
                     console.error(err);
                 }
@@ -76,7 +64,7 @@ export class Game {
                 // COMPUTER ATTACK TURN
                 try {
                     if (!Player.getPlayerTurn()) {
-                        this.#computer.computerAttack(this.#player);
+                        this.#computer.attack(this.#player);
                     }
                 } catch (err) {
                     console.error(err);

@@ -45,15 +45,11 @@ export class ShipDragHandler {
             }
             return true; // Keep this listener
         });
-        console.log(this.#eventListeners);
-        
     }
 
     /* DESKTOP SUPPORT */
 
     #dragStart(e, ship) {
-        console.log(1);
-        
         this.startShip = ship.cloneNode(false); // store the ship's starting position
         this.currentShip = ship;
 
@@ -61,7 +57,6 @@ export class ShipDragHandler {
     }
 
     #dragEnd() {
-        console.log(2);
         // Reset offset (so that next click has new offset)
         this.offset = { x: 0, y: 0 };
         // Clear the ship references
@@ -70,12 +65,10 @@ export class ShipDragHandler {
     }
 
     #dragOver(e) {
-        console.log(3);
         e.preventDefault(); // Prevent default to allow dropping
     }
 
     #drop(e) {
-        console.log(4);
         e.preventDefault(); // Prevent default behavior
 
         const dropPosition = this.#getDropPosition(e);

@@ -40,6 +40,10 @@ export class User {
         }
     }
 
+    attack() {
+        throw new Error("Attack method needs to be defined");
+    }
+
     randomlySetShips() {
         this.#gameboard.resetBoard();
         // Start the backtracking process with the first ship

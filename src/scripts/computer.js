@@ -32,7 +32,7 @@ export class Computer extends User {
         });
     }
 
-    computerAttack(playerObj) {
+    attack(playerObj) {
         const {x, y} = this.#chooseComputerAttack();
 
         // if attack array is empty and can't assign x, y
@@ -48,9 +48,19 @@ export class Computer extends User {
         const playerTiles = document.querySelector('.Player #gameboard').querySelectorAll('[id=tile]');
         playerTiles[x+y*this.#gameboard.width].appendChild(attackEffect);
 
+        
         if (attack === 'hit') {
             // change last successful hit
             this.#lastComputerHitStack.push({x, y});
+
+            // check if ship sunk
+            if (playerObj.gameboard.board[y][x].ship.isSunk()) {
+                // display it
+                console.log('sunk', playerObj.gameboard.board[y][x].ship.name);
+                const el = document.querySelector(`.Player #gameboard [id=ship][name=${playerObj.gameboard.board[y][x].ship.name}`);
+                console.log(el);
+                
+            }
         }
         Computer.setPlayerTurn(true);
     }

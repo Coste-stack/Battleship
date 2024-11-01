@@ -9,6 +9,21 @@ export class Player extends User {
         this.#gameboard = gameboard;
     }
 
+    attack(computerObj, tileIndex) {
+        let x = tileIndex % this.#gameboard.width;
+        let y = Math.floor(tileIndex / this.#gameboard.height);
+        const attack = computerObj.gameboard.receiveAttack(x, y);
+
+        // add hit effect
+        const attackEffect = document.createElement('div');
+        attackEffect.classList.add(attack);
+        const playerTiles = document.querySelector('.Computer #gameboard').querySelectorAll('[id=tile]');
+        playerTiles[x+y*this.#gameboard.width].appendChild(attackEffect);
+
+        // change turn
+        Player.setPlayerTurn(false);
+    }
+
     addRandomizeShipsButton() {
         const GB = document.querySelector(`.Player #gameboard`);
         // create RANDOMIZE SHIPS BUTTON
