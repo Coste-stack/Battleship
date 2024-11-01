@@ -96,7 +96,7 @@ export class Player extends User {
             // Dispatch custom event after ships are randomized
             document.dispatchEvent(new CustomEvent('shipsRandomized', { detail: { type: 'Player' } }));
         });
-        document.querySelector(`.Player#player-container`).appendChild(RandomizeShips);
+        document.querySelector(`.Player#gameboard-wrapper`).appendChild(RandomizeShips);
     }
 
     addPlayMenu() {

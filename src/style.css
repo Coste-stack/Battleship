@@ -3,9 +3,14 @@
     --gameboard-background-color: #222831;
     --blinder-brightness: 60%;
 
+    --button-background-color: #5f5f5f;
+    --button-border-color: #b4b4b4;
+    --button-shadow-color: #00000080;
+    --button-color: #f0f0f0;
+
     --tile-color: #31363F ;
     --tile-border-color: #5e5e5e;
-    --tile-color-hit: #662828;
+    --tile-color-hit: #8f2a2a;
     --tile-color-miss: #201e1e;
 
     --ship-color: #2e496b;
@@ -54,16 +59,35 @@ body {
     pointer-events: none;
 }
 
-#play-button {
-    position: absolute;
-    padding: 0.5rem 1rem;
+#game-wrapper button {
+    width: 100%;
+    font-size: clamp(0.5rem, 3vw + 0.2rem, 1.3rem);
+    color: var(--button-color);
+
+    background-color: var(--button-background-color);
+    border: 2px solid var(--button-border-color);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--button-shadow-color);
+    transition: background-color 0.3s, transform 0.2s;
+
+    padding: clamp(0.5rem, 1vw + 0.2rem, 1.5rem);
 }
+#game-wrapper button:hover {
+    transform: scale(1.05);
+}
+#game-wrapper button:active {
+    transform: scale(0.95);
+}
+
 
 #gameboard-wrapper {
     /*center play-button as item of .gameboard-wrapper*/
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 @media screen and (max-height: 800px) {
@@ -87,10 +111,6 @@ body {
     display: grid;
     gap: 5px;
     position: relative;
-}
-
-#gameboard-container button {
-    color: var(--button-font-color);
 }
 
 /* GAMEBOARD ITEMS */
