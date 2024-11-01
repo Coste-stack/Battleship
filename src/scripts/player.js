@@ -42,8 +42,12 @@ export class Player extends User {
                 ship.style.gridColumnStart = startX;
                 ship.style.gridRowEnd = endY;
                 ship.style.gridColumnEnd = endX;
-        
                 computerGbHTML.appendChild(ship);
+
+                ship.offsetHeight;
+
+                // add ship filter
+                ship.classList.add('gray-scale');
             }
         }
 
