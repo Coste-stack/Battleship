@@ -1,7 +1,6 @@
 import './reset.css';
 import './style.css';
 
-import { Ship } from './scripts/ship.js';
 import { Game } from './scripts/game.js';
 
 (function main() {
@@ -10,13 +9,8 @@ import { Game } from './scripts/game.js';
 
         // initialize Ship objects
         const shipsInitial = {'Battleship': 1, 'Cruiser': 1, 'Submarine': 1, 'Destroyer': 2};
-        const ships = [];
-        Object.entries(shipsInitial).forEach(([ship, length]) => {
-            const shipObj = new Ship(ship, length); 
-            ships.push(shipObj);
-        });
 
-        new Game(ships);
+        new Game(shipsInitial);
 
     } catch (e) {
         console.error(e);

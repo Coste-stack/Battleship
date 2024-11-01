@@ -22,18 +22,16 @@ export class Player extends User {
         const playerTiles = computerGbHTML.querySelectorAll('[id=tile]');
         playerTiles[x+y*this.#gameboard.width].appendChild(attackEffect);
 
-        const computerGbObj = computerObj.gameboard
+        const computerGbObj = computerObj.gameboard;
         if (attack === 'hit') {
+
             if (computerGbObj.board[y][x].ship.isSunk()) {
                 const shipName = computerGbObj.board[y][x].ship.name;
                 // display it
                 console.log('sunk', shipName);
                 
                 // make the ship appear
-                console.log(computerGbObj.shipsOnBoard);
-                
-                const shipData = computerGbObj.shipsOnBoard[shipName];
-                const { startX, endX, startY, endY } = shipData;
+                const { startX, endX, startY, endY } = computerGbObj.shipsOnBoard[shipName];
     
                 const ship = document.createElement('div');
                 ship.setAttribute('id', 'ship');

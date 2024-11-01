@@ -1,12 +1,21 @@
 import { Player } from './player.js';
+import { Ship } from './ship.js';
 import { Computer } from './computer.js';
 import { Gameboard } from './gameboard.js';
 
 export class Game {
     #player; #computer;
-    #GBwidth; #GBheight;
     
-    constructor(ships) {
+    createShips(shipsInitial) {
+        const ships = [];
+        Object.entries(shipsInitial).forEach(([ship, length]) => {
+            const shipObj = new Ship(ship, length); 
+            ships.push(shipObj);
+        });
+        return ships
+    }
+
+    constructor(shipsInitial) {
         // Initialize Gameboards
         const GBwidth = 7;
         const GBheight = 7;
@@ -14,13 +23,11 @@ export class Game {
         const computerGB = new Gameboard(GBwidth, GBheight);
 
         // Initialize Players
-        const player = new Player(playerGB, ships);
-        const computer = new Computer(computerGB, ships);
+        const player = new Player(playerGB, this.createShips(shipsInitial));
+        const computer = new Computer(computerGB, this.createShips(shipsInitial));
 
         this.#player = player;
         this.#computer = computer;
-        this.#GBwidth = GBwidth;
-        this.#GBheight = GBheight;
 
         // Use methods to initialize the game 
         player.initGameboard();
