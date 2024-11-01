@@ -57,9 +57,9 @@ export class Computer extends User {
             if (playerObj.gameboard.board[y][x].ship.isSunk()) {
                 // display it
                 console.log('sunk', playerObj.gameboard.board[y][x].ship.name);
-                // const el = document.querySelector(`.Player #gameboard [id=ship][name=${playerObj.gameboard.board[y][x].ship.name}`);
-                // console.log(el);
                 
+                const ship = document.querySelector(`.Player #gameboard [id=ship][name=${playerObj.gameboard.board[y][x].ship.name}`);
+                this.addRippleEffect(ship);
             }
         }
         Computer.setPlayerTurn(true);

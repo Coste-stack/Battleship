@@ -44,10 +44,7 @@ export class Player extends User {
                 ship.style.gridColumnEnd = endX;
                 computerGbHTML.appendChild(ship);
 
-                ship.offsetHeight;
-
-                // add ship filter
-                ship.classList.add('gray-scale');
+                this.addRippleEffect(ship);
             }
         }
 

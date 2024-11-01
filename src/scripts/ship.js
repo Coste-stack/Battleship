@@ -22,7 +22,6 @@ export class Ship {
     set orientation(newOrientation) { this.#orientation = newOrientation; }
 
     hit() {
-        console.log('hit');
         this.#hits++; 
     }
 
