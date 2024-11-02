@@ -47,7 +47,7 @@ export class Game {
         // Start the game attack turns - when 'gamePrepared' is up
         document.addEventListener('gamePrepared', () => this.startGame());
         // End the game - when 'gameEnded' is up
-        document.addEventListener('gameEnded', () => this.endGame());
+        document.addEventListener('gameEnded', (event) => this.endGame(event));
     }
 
     startGame() {
@@ -82,13 +82,21 @@ export class Game {
         });
     }
 
-    endGame() {
+    endGame(event) {
         const blinder = document.createElement('div');
         blinder.classList.add('body-blinder');
 
         const el = document.createElement('p');
-        el.textContent = 'You Lose';
-        el.classList.add('game-over');
+        switch(event.detail.type) {
+            case 'Player':
+                el.textContent = 'You Win';
+                el.classList.add('game-win');
+                break;
+            case 'Computer':
+                el.textContent = 'You Lose';
+                el.classList.add('game-lose');
+                break;
+        }
 
         blinder.appendChild(el);
         document.body.appendChild(blinder);

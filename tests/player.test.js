@@ -1,24 +1,26 @@
 import { Ship } from '../src/scripts/ship.js';
+import { Gameboard } from '../src/scripts/gameboard.js';
 import { Player } from '../src/scripts/player.js';
+import { Computer } from '../src/scripts/computer.js';
+import { User } from '../src/scripts/user.js';
 
-describe('Player Class', () => {
+describe('User subclasses', () => {
 
-    test('Create Player class object', () => {
-        expect(() => new Player('player')).not.toThrow(Error);
-        expect(() => new Player('computer')).not.toThrow(Error);
-        expect(() => new Player([])).toThrow(Error);
-    });
+    let ships;
+    let gb;
+    beforeAll(() => {
+        gb = new Gameboard(7, 7);
 
-    test('Randomly place ships', () => {
         const shipsInitial = {'Battleship': 4, 'Cruiser': 3, 'Submarine': 3, 'Destroyer': 2, 'Patrol': 1};
-        const ships = [];
+        ships = [];
         Object.entries(shipsInitial).forEach(([ship, length]) => {
             const shipObj = new Ship(ship, length); 
             ships.push(shipObj);
         });
+    });
 
-        const player = new Player('player');
-        expect(() => player.randomlySetShips(ships)).not.toThrow(Error);
+    test('Create User', () => {
+        expect(() => new User(gb, ships)).toThrow(Error);
     });
 
 });

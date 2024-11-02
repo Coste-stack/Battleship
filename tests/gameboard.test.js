@@ -34,7 +34,7 @@ describe('Gameboard Class', () => {
         let x = 0, y = 0;
         gameboard = new Gameboard(width, height);
         let cruiser = new Ship('Cruiser', 3);
-        gameboard.placeShip(x, y, cruiser);
+        gameboard.placeShip(x, y, cruiser, 'x');
 
         for(let i=x; i < x; i++) {
             expect(gameboard.board[x][i]).toStrictEqual({ship: cruiser, isHit: false});

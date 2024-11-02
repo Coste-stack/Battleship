@@ -51,9 +51,9 @@ export class Player extends User {
 
                 this.addRippleEffect(ship);
 
-                // check if player sunk all computer ships - end the game
+                // check if player sank all computer ships - end the game
                 if (this.#sunkenOpponentShips === this.#ships.length) {
-                    document.dispatchEvent(new CustomEvent('gameEnded', (event) => event.detail.type));
+                    document.dispatchEvent(new CustomEvent('gameEnded', { detail: { type: this.constructor.name } }));
                 }
             }
         }

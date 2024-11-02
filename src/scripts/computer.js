@@ -2,12 +2,15 @@ import { User } from "./user.js";
 
 export class Computer extends User {
     #gameboard;
+    #ships;
     #lastComputerHitStack;
     #computerAttacks;
+    #sunkenOpponentShips = 0;
 
     constructor(gameboard, ships) {
         super(gameboard, ships);
         this.#gameboard = gameboard;
+        this.#ships = ships;
 
         this.#lastComputerHitStack = [];
         this.#computerAttacks = [];
@@ -55,11 +58,18 @@ export class Computer extends User {
 
             // check if ship sunk
             if (playerObj.gameboard.board[y][x].ship.isSunk()) {
+                this.#sunkenOpponentShips++;
+
                 // display it
                 console.log('sunk', playerObj.gameboard.board[y][x].ship.name);
                 
                 const ship = document.querySelector(`.Player #gameboard [id=ship][name=${playerObj.gameboard.board[y][x].ship.name}`);
                 this.addRippleEffect(ship);
+
+                // check if computer sank all player ships - end the game
+                if (this.#sunkenOpponentShips === this.#ships.length) {
+                    document.dispatchEvent(new CustomEvent('gameEnded', { detail: { type: this.constructor.name } }));
+                }
             }
         }
         Computer.setPlayerTurn(true);
