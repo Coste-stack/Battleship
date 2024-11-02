@@ -98,18 +98,4 @@ export class Player extends User {
         });
         document.querySelector(`.Player#gameboard-wrapper`).appendChild(RandomizeShips);
     }
-
-    addPlayMenu() {
-        // add a BLINDER (if there's none)
-        const computerGB = document.querySelector('.Computer #gameboard')
-        if (computerGB && !computerGB.classList.contains('blinder')) {
-            computerGB.classList.add('blinder');
-        }
-
-        // dispatchEvent to create a PLAY BUTTON when there are ships placed 
-        document.addEventListener('shipsRandomized', (event) => {
-            // (pass 'type' from which the ships were randomized)
-            document.dispatchEvent(new CustomEvent('playReady', { detail: { type: event.detail.type } }));
-        });
-    }
 }
