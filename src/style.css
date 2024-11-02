@@ -71,11 +71,19 @@ body {
 
     padding: clamp(0.5rem, 1vw + 0.2rem, 1.5rem);
 }
-#game-wrapper button:hover {
-    transform: scale(1.05);
+@media screen and (max-height: 800px) {
+    #game-wrapper button:active {
+        transform: scale(0.95);
+        transition: .1s;
+    }
 }
-#game-wrapper button:active {
-    transform: scale(0.95);
+@media screen and (min-height: 800px) {
+    #game-wrapper button:hover {
+        transform: scale(1.05);
+    }
+    #game-wrapper button:active {
+        transform: scale(0.95);
+    }
 }
 
 #play-button {
