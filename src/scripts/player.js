@@ -54,10 +54,8 @@ export class Player extends User {
 
     addRandomizeShipsButton() {
         const GB = document.querySelector(`.Player #gameboard`);
-        // create RANDOMIZE SHIPS BUTTON
-        const RandomizeShips = document.createElement('button');
-        RandomizeShips.textContent = 'Randomize Ships';
-        RandomizeShips.setAttribute('id', 'randomize-button');
+        // get RANDOMIZE SHIPS BUTTON
+        const RandomizeShips = document.getElementById('randomize-button');
 
         // allow drag/drop for gameboard
         const dragObj = new ShipDragHandler(this.#gameboard);
@@ -96,6 +94,5 @@ export class Player extends User {
             // Dispatch custom event after ships are randomized
             document.dispatchEvent(new CustomEvent('shipsRandomized', { detail: { type: 'Player' } }));
         });
-        document.querySelector(`.Player#gameboard-wrapper`).appendChild(RandomizeShips);
     }
 }
