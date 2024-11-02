@@ -111,12 +111,10 @@ export class Computer extends User {
 
     createPlayButton() {
         const blinder = document.querySelector('.Computer .blinder');
-        if (blinder && document.querySelector('#play-button') === null) {
-            const playButton = document.createElement('button');
-            playButton.textContent = 'Play';
-            playButton.setAttribute('id', 'play-button');
-            const container = document.querySelector('.Computer #gameboard-wrapper')
-            container.appendChild(playButton);
+        const playButton = document.getElementById('play-button');
+        
+        if (blinder && playButton) {
+            playButton.style.visibility = 'visible';
 
             playButton.addEventListener('click', () => {
                 // hide 'randomize ships' button (hide and not remove - to keep space)

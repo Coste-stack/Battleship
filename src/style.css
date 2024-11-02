@@ -30,7 +30,7 @@ body {
 }
 
 #game-wrapper {
-    width: 100%; height: 90%;
+    width: 100%; height: 95%;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
@@ -42,9 +42,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
 
-    min-width: 20rem;
+    min-width: 21rem;
     width: 40%; height: auto;
     max-width: 35rem;
 }
@@ -77,6 +76,10 @@ body {
 }
 #game-wrapper button:active {
     transform: scale(0.95);
+}
+
+#play-button {
+    visibility: hidden;
 }
 
 
