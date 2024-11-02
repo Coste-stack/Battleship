@@ -86,19 +86,26 @@ export class Game {
         const blinder = document.createElement('div');
         blinder.classList.add('body-blinder');
 
-        const el = document.createElement('p');
+        const blinderContent = document.createElement('div');
+        blinderContent.classList.add('blinder-content');
+
+        const text = document.createElement('p');
+        text.classList.add('pop-in');
+        text.style.display = 'block';
+
         switch(event.detail.type) {
             case 'Player':
-                el.textContent = 'You Win';
-                el.classList.add('game-win');
+                text.textContent = 'You Win';
+                text.classList.add('game-win');
                 break;
             case 'Computer':
-                el.textContent = 'You Lose';
-                el.classList.add('game-lose');
+                text.textContent = 'You Lose';
+                text.classList.add('game-lose');
                 break;
         }
 
-        blinder.appendChild(el);
+        blinderContent.appendChild(text);
+        blinder.appendChild(blinderContent);
         document.body.appendChild(blinder);
     }
 }
