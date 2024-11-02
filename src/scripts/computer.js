@@ -115,6 +115,7 @@ export class Computer extends User {
         
         if (blinder && playButton) {
             playButton.style.visibility = 'visible';
+            playButton.classList.add('pop-in');
 
             playButton.addEventListener('click', () => {
                 // remove blinder class from wrapper
@@ -128,6 +129,7 @@ export class Computer extends User {
                     const randomizeButton = document.querySelector('#randomize-button');
                     if (randomizeButton) randomizeButton.classList.add('fade-out');
                     // make 'play' button hidden
+                    playButton.classList.remove('pop-in');
                     playButton.classList.add('fade-out');
                 }, 100);
             });
