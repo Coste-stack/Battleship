@@ -120,8 +120,8 @@ export class Computer extends User {
                 // hide 'randomize ships' button (hide and not remove - to keep space)
                 const randomizeButton = document.querySelector('#randomize-button');
                 if (randomizeButton) randomizeButton.style.visibility = 'hidden';
-                // remove 'play' button
-                playButton.remove();
+                // make 'play' button hidden
+                playButton.style.visibility = 'hidden';
                 // remove blinder class from wrapper
                 blinder.classList.remove('blinder');
                 // RANDOMIZE COMPUTERS's SHIPS
