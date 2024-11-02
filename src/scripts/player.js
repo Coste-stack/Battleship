@@ -3,9 +3,12 @@ import { User } from "./user.js";
 
 export class Player extends User {
     #gameboard;
+    #ships;
+    #sunkenOpponentShips = 0;
     
     constructor(gameboard, ships) {
         super(gameboard, ships);
+        this.#ships = ships;
         this.#gameboard = gameboard;
     }
 
@@ -26,6 +29,8 @@ export class Player extends User {
         if (attack === 'hit') {
 
             if (computerGbObj.board[y][x].ship.isSunk()) {
+                this.#sunkenOpponentShips++;
+
                 const shipName = computerGbObj.board[y][x].ship.name;
                 // display it
                 console.log('sunk', shipName);
@@ -45,6 +50,11 @@ export class Player extends User {
                 computerGbHTML.appendChild(ship);
 
                 this.addRippleEffect(ship);
+
+                // check if player sunk all computer ships - end the game
+                if (this.#sunkenOpponentShips === this.#ships.length) {
+                    document.dispatchEvent(new CustomEvent('gameEnded', (event) => event.detail.type));
+                }
             }
         }
 

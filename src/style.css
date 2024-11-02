@@ -23,10 +23,6 @@
 body {
     height: 100vh; width: 100vw;
     background-color: var(--background-color);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #game-wrapper {
@@ -53,7 +49,7 @@ body {
     color: var(--player-font-color);
 }
 
-#gameboard.blinder {
+.gameboard-blinder {
     filter: brightness(var(--blinder-brightness));
     pointer-events: none;
 }
@@ -207,4 +203,57 @@ body {
 }
 .ripple.animate {
     transform: scale(2);
+}
+
+/* GAME END ITEMS */
+
+body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.body-blinder {
+    position: absolute;
+    height: 100%; width: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-over {
+    font-size: 5em;
+    animation-name: youLose;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    letter-spacing: 0.01em;
+}
+
+@keyframes youLose {
+0% {
+    /*Start with white color and shadow*/
+    color: #ffffff;
+    text-shadow: 0 0 20px #ffffff;
+    transform: translate(0, 0) scale(1);
+    letter-spacing: 0.01em;
+}
+50% {
+    /*Change to red, translate downwards, scale up*/
+    color: #c20606;
+    text-shadow: 0 0 30px #c20606;
+    transform: translate(0, 30px) scale(1.1);
+    letter-spacing: 0.05em;
+}
+90%, 100% {
+    /*Change back to white starting position*/
+    color: #ffffff;
+    text-shadow: 0 0 20px #ffffff;
+    transform: translate(0, 0) scale(1);
+    letter-spacing: 0.01em;
+}
 }

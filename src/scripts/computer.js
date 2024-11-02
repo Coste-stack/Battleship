@@ -21,8 +21,8 @@ export class Computer extends User {
     addPlayMenu() {
         // add a BLINDER (if there's none)
         const computerGB = document.querySelector('.Computer #gameboard')
-        if (computerGB && !computerGB.classList.contains('blinder')) {
-            computerGB.classList.add('blinder');
+        if (computerGB && !computerGB.classList.contains('gameboard-blinder')) {
+            computerGB.classList.add('gameboard-blinder');
         }
 
         // dispatchEvent to create a PLAY BUTTON when there are ships placed 
@@ -110,7 +110,7 @@ export class Computer extends User {
 
 
     createPlayButton() {
-        const blinder = document.querySelector('.Computer .blinder');
+        const blinder = document.querySelector('.Computer .gameboard-blinder');
         const playButton = document.getElementById('play-button');
         
         if (blinder && playButton) {
@@ -119,7 +119,7 @@ export class Computer extends User {
 
             playButton.addEventListener('click', () => {
                 // remove blinder class from wrapper
-                blinder.classList.remove('blinder');
+                blinder.classList.remove('gameboard-blinder');
                 // RANDOMIZE COMPUTERS's SHIPS
                 this.randomlySetShips();
                 // START GAME TURNS

@@ -17,8 +17,8 @@ export class Game {
 
     constructor(shipsInitial) {
         // Initialize Gameboards
-        const GBwidth = 7;
-        const GBheight = 7;
+        const GBwidth = 5;
+        const GBheight = 5;
         const playerGB = new Gameboard(GBwidth, GBheight);
         const computerGB = new Gameboard(GBwidth, GBheight);
 
@@ -46,6 +46,8 @@ export class Game {
 
         // Start the game attack turns - when 'gamePrepared' is up
         document.addEventListener('gamePrepared', () => this.startGame());
+        // End the game - when 'gameEnded' is up
+        document.addEventListener('gameEnded', () => this.endGame());
     }
 
     startGame() {
@@ -78,5 +80,17 @@ export class Game {
                 }
             });
         });
+    }
+
+    endGame() {
+        const blinder = document.createElement('div');
+        blinder.classList.add('body-blinder');
+
+        const el = document.createElement('p');
+        el.textContent = 'You Lose';
+        el.classList.add('game-over');
+
+        blinder.appendChild(el);
+        document.body.appendChild(blinder);
     }
 }
