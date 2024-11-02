@@ -117,17 +117,19 @@ export class Computer extends User {
             playButton.style.visibility = 'visible';
 
             playButton.addEventListener('click', () => {
-                // hide 'randomize ships' button (hide and not remove - to keep space)
-                const randomizeButton = document.querySelector('#randomize-button');
-                if (randomizeButton) randomizeButton.style.visibility = 'hidden';
-                // make 'play' button hidden
-                playButton.style.visibility = 'hidden';
                 // remove blinder class from wrapper
                 blinder.classList.remove('blinder');
                 // RANDOMIZE COMPUTERS's SHIPS
                 this.randomlySetShips();
                 // START GAME TURNS
                 document.dispatchEvent(new CustomEvent('gamePrepared'));
+                setTimeout(() => {
+                    // hide 'randomize ships' button (hide and not remove - to keep space)
+                    const randomizeButton = document.querySelector('#randomize-button');
+                    if (randomizeButton) randomizeButton.classList.add('fade-out');
+                    // make 'play' button hidden
+                    playButton.classList.add('fade-out');
+                }, 100);
             });
         }
     }

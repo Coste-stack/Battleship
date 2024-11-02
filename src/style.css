@@ -89,6 +89,19 @@ body {
 #play-button {
     visibility: hidden;
 }
+.fade-out {
+    animation: fadeOut 0.5s forwards ease-out;
+}
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
 
 
 #gameboard-wrapper {
