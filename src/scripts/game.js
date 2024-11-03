@@ -104,11 +104,11 @@ export class Game {
         text.style.display = 'block';
 
         switch(event.detail.type) {
-            case 'Player':
+            case 'Computer':
                 text.textContent = 'You Win';
                 text.classList.add('game-win');
                 break;
-            case 'Computer':
+            case 'Player':
                 text.textContent = 'You Lose';
                 text.classList.add('game-lose');
                 break;
