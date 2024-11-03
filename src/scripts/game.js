@@ -122,7 +122,7 @@ export class Game {
 
         // When clicked, restart the page
         restartButton.addEventListener('click', () => {
-            document.dispatchEvent(new CustomEvent('gameRestart'));
+            location.reload();
         });
 
         blinderContent.appendChild(text);
