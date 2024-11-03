@@ -50,16 +50,15 @@ export class Player extends User {
                 computerGbHTML.appendChild(ship);
 
                 this.addRippleEffect(ship);
-
-                // check if player sank all computer ships - end the game
-                if (this.#sunkenOpponentShips === this.#ships.length) {
-                    document.dispatchEvent(new CustomEvent('gameEnded', { detail: { type: this.constructor.name } }));
-                }
             }
         }
 
         // change turn
         Player.setPlayerTurn(false);
+    }
+
+    isDefeated() {
+        return this.#sunkenOpponentShips === this.#ships.length;
     }
 
     addRandomizeShipsButton() {

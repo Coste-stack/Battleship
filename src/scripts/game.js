@@ -46,8 +46,6 @@ export class Game {
 
         // Start the game attack turns - when 'gamePrepared' is up
         document.addEventListener('gamePrepared', () => this.startGame());
-        // End the game - when 'gameEnded' is up
-        document.addEventListener('gameEnded', (event) => this.endGame(event));
     }
 
     startGame() {
@@ -66,6 +64,12 @@ export class Game {
                         throw new Error('Not Player\'s turn');
                     }
                     this.#player.attack(this.#computer, tileIndex);
+
+                    // Check for end game after player's attack
+                    if (this.#computer.isDefeated()) {
+                        this.endGame({ detail: { type: 'Player' } });
+                        return;  // Exit to prevent computer's attack
+                    }
                 } catch (err) {
                     console.error(err);
                 }
@@ -74,6 +78,12 @@ export class Game {
                 try {
                     if (!Player.getPlayerTurn()) {
                         this.#computer.attack(this.#player);
+
+                        // Check for end game after computer's attackh
+                        if (this.#player.isDefeated()) {
+                            this.endGame({ detail: { type: 'Computer' } });
+                            return;
+                        }
                     }
                 } catch (err) {
                     console.error(err);

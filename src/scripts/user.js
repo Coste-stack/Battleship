@@ -12,6 +12,7 @@ export class User {
          };
         this.#gameboard = gameboard;
         this.#ships = ships;
+        User.sunkenOpponentShips = 0;
 
         // generate ripple effect to apply to sunken ships
         this.#ripple = this.#getRippleSpan();
@@ -46,6 +47,11 @@ export class User {
 
     attack() {
         throw new Error("Attack method needs to be defined");
+    }
+
+    // check if user sank all opponent's ships - end the game
+    isDefeated() {
+        throw new Error("isDefeated method needs to be defined");
     }
     
     #getRippleSpan() {
