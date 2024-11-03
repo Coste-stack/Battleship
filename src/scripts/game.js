@@ -114,7 +114,12 @@ export class Game {
                 break;
         }
 
+        const restartButton = document.createElement('button');
+        restartButton.textContent = 'Restart';
+        restartButton.classList.add('restart-button');
+
         blinderContent.appendChild(text);
+        blinderContent.appendChild(restartButton);
         blinder.appendChild(blinderContent);
         document.body.appendChild(blinder);
     }

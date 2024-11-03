@@ -227,8 +227,10 @@ body {
 .blinder-content {
     height: 50%; width: 100%;
     display: flex;
-    align-items: start;
-    justify-content: center;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    gap: 50%;
 }
 
 .game-lose, .game-win {
@@ -289,4 +291,27 @@ body {
     transform: translate(0, 0) scale(1);
     letter-spacing: 0.01em;
 }
+}
+
+.restart-button {
+    font-size: 2.5em;
+    color: #00ffcc;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 2px solid transparent;
+    border-radius: 15px;
+    padding: 15px 30px;
+    text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.restart-button:hover {
+    background-color: rgba(0, 0, 0, 1);
+    border-color: #00ffcc;
+    box-shadow: 0 0 15px #00ffcc, 0 0 25px #00ffcc;
+    transform: translateY(-5px) scale(1.05);
+}
+.restart-button:active {
+    transform: translateY(0) scale(1);
 }
