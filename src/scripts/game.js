@@ -5,8 +5,10 @@ import { Gameboard } from './gameboard.js';
 
 export class Game {
     #player; #computer;
+    #shipsInitial;
     
     createShips(shipsInitial) {
+        this.#shipsInitial = shipsInitial;
         const ships = [];
         Object.entries(shipsInitial).forEach(([ship, length]) => {
             const shipObj = new Ship(ship, length); 
@@ -118,8 +120,9 @@ export class Game {
         restartButton.textContent = 'Restart';
         restartButton.classList.add('restart-button');
 
+        // When clicked, restart the page
         restartButton.addEventListener('click', () => {
-            // ADD RESTART LOGIC
+            document.dispatchEvent(new CustomEvent('gameRestart'));
         });
 
         blinderContent.appendChild(text);
