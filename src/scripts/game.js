@@ -118,6 +118,10 @@ export class Game {
         restartButton.textContent = 'Restart';
         restartButton.classList.add('restart-button');
 
+        restartButton.addEventListener('click', () => {
+            // ADD RESTART LOGIC
+        });
+
         blinderContent.appendChild(text);
         blinderContent.appendChild(restartButton);
         blinder.appendChild(blinderContent);
